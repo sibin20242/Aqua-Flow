@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email & OTP Verification</title>
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <style>
+        .main {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 100px;
+      background-color: rgba(3, 3, 69, 0.129);
+      height: 500px;
+      position: relative;
+    }
+        .otp-container {
+            max-width: 300px;
+            margin: 100px auto;
+            background-color: rgba(249, 249, 249, 0.758);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(22, 22, 22, 0.758);
+            position: relative;
+        }
+
+        .otp-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: darkslategray;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group input[type="text"], .form-group input[type="email"] {
+            width: 90%;
+            margin-top: 18px;
+            padding: 15px;
+            background-color: transparent;
+            border-radius: 20px;
+            border: 1px solid gray;
+        }
+
+        .form input[type="submit"] {
+            width: 100px;
+            height: 40px;
+            background-color: rgb(2, 26, 74);
+            padding: 10px;
+            border-radius: 30px;
+            margin-bottom: 10%;
+            margin-left: 100px;
+            transition: 0.3s ease;
+            border: none;
+        }
+
+        .form input[type="submit"]:hover {
+            background-color: black;
+            color: white;
+        }
+
+        .otp-boxes {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .otp-boxes input {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 5px;
+            border: 1px solid gray;
+            margin-right: 5px;
+        }
+
+        .otp-boxes input:focus {
+            outline: none;
+            border-color: darkslategray;
+        }
+
+        .message {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: darkgreen;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            cursor: pointer;
+            font-size: 22px;
+            color: darkslategray;
+            transition: 0.3s ease;
+        }
+
+        .back-button:hover {
+            color: black;
+        }
+
+    </style>
+</head>
+<body class="group">
+    <div class="main">
+    <div class="otp-container">
+
+        <form class="otp-form" id="email-form">
+            <h2>GET OTP</h2>
+            
+            <div class="form-group">
+                <label for="email">Phone/E-mail</label>
+                <input type="text" id="email" placeholder="Enter your Phone/email" required>
+            </div>
+    
+            <div class="form">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+
+        <form class="otp-form" id="otp-form" style="display: none;">
+            <i class='bx bx-arrow-back back-button' id="back-btn"></i>
+
+            <h2>Enter OTP</h2>
+
+            <div class="message" id="message">
+                We've sent a code to <span id="user-email"></span>. Enter the 4-digit OTP below.
+            </div>
+            
+            <div class="form-group otp-boxes">
+                <input type="text" maxlength="1" id="otp-1" required>
+                <input type="text" maxlength="1" id="otp-2" required>
+                <input type="text" maxlength="1" id="otp-3" required>
+                <input type="text" maxlength="1" id="otp-4" required>
+            </div>
+    
+            <div class="form">
+                <input type="submit" value="Verify OTP">
+            </div>
+        </form>
+    </div>
+    </div>
+    <script>
+        const emailForm = document.getElementById('email-form');
+        const otpForm = document.getElementById('otp-form');
+        const emailInput = document.getElementById('email');
+        const userEmailSpan = document.getElementById('user-email');
+        const otpInputs = document.querySelectorAll('.otp-boxes input');
+        const backButton = document.getElementById('back-btn');
+
+        emailForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const userEmail = emailInput.value;
+
+            userEmailSpan.textContent = userEmail;
+
+            emailForm.style.display = 'none';
+            otpForm.style.display = 'block';
+        });
+
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', () => {
+                if (input.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus(); 
+                } else if (input.value.length === 1 && index === otpInputs.length - 1) {
+                    input.blur(); 
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === "Backspace" && input.value.length === 0 && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+
+        backButton.addEventListener('click', () => {
+            otpForm.style.display = 'none'; 
+            emailForm.style.display = 'block'; 
+        });
+    </script>
+</body>
+</html>
