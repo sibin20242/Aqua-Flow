@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> <!-- Character encoding for the document -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design for mobile devices -->
+    <title>Document</title> <!-- Title of the document displayed in the browser tab -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- Link to Google Material Icons -->
+    <link rel="stylesheet" href="sign.css"> <!-- Link to the external CSS stylesheet for styling -->
+</head>
+<body>
+    <!-- Form container for the signup card -->
+    <form class="card">
+        <h1 id="head">SIGN UP</h1> <!-- Main heading for the signup form -->
+        
+        <div class="center">
+            <label for="user">E-mail/Phone Number</label> <!-- Label for the email/phone input -->
+        </div>
+        
+        <div class="User"> 
+            <i class="material-icons person-icon">person</i> <!-- Icon for email/phone input -->
+            <input type="text" class="username" placeholder="E-mail/Phone Number"> <!-- Input for email/phone number -->
+        </div>
+        
+        <div class="center">
+            <label for="password">Password</label> <!-- Label for the password input -->
+            <div class="pass">
+                <i class="material-icons lock-icon">lock</i> <!-- Icon for password input -->
+                <input type="password" class="password" placeholder="Enter your Password"> <!-- Input for password -->
+            </div>
+        </div>
+        
+        <div class="center">
+            <label for="repassword">Re-enter Password</label> <!-- Label for re-enter password input -->
+            <div class="repass">
+                <i class="material-icons relock-icon">lock</i> <!-- Icon for re-enter password input -->
+                <input type="password" class="repassword" placeholder="Re-Enter your Password"> <!-- Input for re-entering password -->
+            </div>
+        </div>
+        
+        <div class="center">
+    
+                <button type="submit">Sign Up</button> <!-- Button to submit the signup form -->
+            
+            <div id="Forget">
+                <a href="#">Forget Password?</a> <!-- Link to reset password -->
+            </div>
+            <p>
+                Already Have an Account? <a href="Login.html">Login</a> <!-- Link to the login page -->
+            </p>
+        </div>
+    </form>
+</body>
+</html>

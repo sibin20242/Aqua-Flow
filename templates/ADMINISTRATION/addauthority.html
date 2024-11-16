@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+        .card {
+    border: 3px solid rgba(77, 76, 76, 0.596); /* Semi-transparent border */
+    padding: 20px; /* Inner spacing for card */
+    background-color: rgba(255, 255, 255, 0.838); /* Semi-transparent white background */
+    border-radius: 15px; /* Rounded corners for the card */
+    width: 500px; /* Fixed width of the card */
+    box-shadow: 10px 20px 30px rgba(16, 16, 16, 0.503); /* Shadow effect for depth */
+    height: 340px;
+    margin-top: 30px;
+}
+
+/* Styling for input fields */
+input {
+    margin-top: 10px; /* Space above the input */
+    width: 300px; /* Fixed width for input fields */
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    margin-bottom: 10px; /* Space below the input */
+    padding: 5px; /* Inner spacing for input */
+    border-bottom: 1px solid rgba(46, 44, 44, 0.999); /* Bottom border for input */
+}
+
+/* Styling for the header element */
+#head {
+    text-align: center; /* Center align the text */
+    color: #000; /* Black text color */
+}
+
+/* Styling for buttons */
+button {
+    margin-left: 70px; /* Space on the left of the button */
+    padding: 10px; /* Inner spacing for button */
+    margin-top: 10px; /* Space above the button */
+    background-color: rgba(2, 26, 74); /* Background color (note: incomplete rgba) */
+    color: rgba(255, 255, 255, 0.804); /* Black text color */
+    width: 300px; /* Fixed width for button */
+    transition: 0.5s ease; /* Smooth transition for hover effects */
+    border-radius: 15px; /* Rounded corners for button */
+    margin-bottom: 10px; /* Space below the button */
+    border: none; /* No border */
+}
+
+/* Hover effect for buttons */
+button:hover {
+    background-color: rgba(2, 26, 74, 0.647); /* Change background color on hover */
+}
+
+/* Placeholder styling for input fields */
+input::placeholder {
+    color: #00000076; /* Semi-transparent black color for placeholder text */
+    margin-bottom: 20px; /* Space below placeholder text */
+    /* Note: 'margin: left 50%;' is invalid; should be removed */
+}
+
+/* Styling for input fields when focused */
+input:focus {
+    outline: none; /* Remove default outline on focus */
+}
+
+/* Styling for "Forget" text element */
+#Forget {
+    text-align: right; /* Align text to the right */
+}
+
+/* User section styling */
+.User { 
+    position: relative; /* Allow absolute positioning of children */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+/* Username input styling */
+.username {
+    padding-left: 30px; /* Space on the left */
+    margin-left: 70px; /* Space on the left */
+}
+
+/* Icon positioning for username input */
+.person-icon {
+    position: absolute; /* Positioning relative to the nearest positioned ancestor */
+    top: 8px; /* Distance from the top */
+    left: 70px; /* Distance from the left */
+}
+
+/* Password section styling */
+.pass { 
+    position: relative; /* Allow absolute positioning of children */
+    margin: 0; /* Remove default margin */
+    padding: 0; /* Remove default padding */
+}
+
+/* Password input styling */
+.password {
+    padding-left: 30px; /* Space on the left */
+    left: 70px; /* Distance from the left */
+}
+
+/* Icon positioning for password input */
+.lock-icon {
+    position: absolute; /* Positioning relative to the nearest positioned ancestor */
+    top: 8px; /* Distance from the top */
+    left: 1px; /* Distance from the left */
+}
+
+/* Center alignment class for spacing */
+.center {
+    margin-left: 70px; /* Space on the left */
+}
+.card1 {
+      display: flex;
+      justify-content: space-evenly;
+      margin-top: 100px;
+      background-color: rgba(3, 3, 69, 0.129);
+      height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card1">
+    <form class="card">
+        <h1 id="head">ADD AUTHORITY</h1> 
+        
+        <div class="center">
+            <label for="user">Authority name</label> <!-- Label for the username input -->
+        </div>
+        
+        <div class="User"> 
+            <i class="material-icons person-icon">person</i> <!-- Icon for username field -->
+            <input type="text" class="username" name="Last_name" placeholder="Enter username"> <!-- Input for username -->
+        </div>
+        
+        <div class="center">
+            <label for="password">Password</label> <!-- Label for the password input -->
+            <div class="pass">
+                <i class="material-icons lock-icon">lock</i> <!-- Icon for password field -->
+                <input type="password" class="password" placeholder="Enter your Password"> <!-- Input for password -->
+            </div>
+        </div>
+        <div class="center">
+            <label for="password">Re-Password</label> <!-- Label for the password input -->
+            <div class="pass">
+                <i class="material-icons lock-icon">lock</i> <!-- Icon for password field -->
+                <input type="password" class="password" placeholder="Enter your Password"> <!-- Input for password -->
+            </div>
+        </div>
+        
+        
+        <div>
+             <button type="button" >Add</button> <!-- Button to submit the login form -->
+        </div>
+        </form>
+    </div>
+</body>
+</html>

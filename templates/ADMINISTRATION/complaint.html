@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Navigation</title>
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .container {
+            display: flex;
+            width: 100%;
+        }
+        .con {
+            width: 20%;
+            padding: 10px;
+            background-color: #0B0421;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card {
+            width: 2px; /* Thin vertical divider */
+            background-color: #333; /* Divider color */
+            margin: 0 10px; /* Space around the divider */
+        }
+        .content {
+            width: 78%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .section {
+            display: none;
+        }
+        .active {
+            display: block;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .profile img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .con a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .con a:hover {
+            color: #cccccc;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Sidebar with profile links -->
+        <div class="con">
+            <div class="profile">
+                <img src="profile.png" alt="Logo">
+                <a class="nav-link" data-target="section1">Ismail</a>
+            </div>
+            <div class="profile">
+                <img src="profile.png" alt="Logo">
+                <a class="nav-link" data-target="section2">Shanid</a>
+            </div>
+            <div class="profile">
+                <img src="profile.png" alt="Logo">
+                <a class="nav-link" data-target="section3">Fasal</a>
+            </div>
+        </div>
+
+        <!-- Divider line -->
+        <div class="card"></div>
+
+        <!-- Main content section -->
+        <div class="content">
+            <div id="section1" class="section">
+                <h2>Ismail</h2>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+                <p>Details for section 1...</p>
+            </div>
+            <div id="section2" class="section">
+                <h2>Shanid</h2>
+                <p>Details for section 2...</p>
+                <p>Details for section 2...</p>
+                <p>Details for section 2...</p>
+                <p>Details for section 2...</p>
+                <p>Details for section 2...</p>
+                <p>Details for section 2...</p>
+                </p>
+            </div>
+            <div id="section3" class="section">
+                <h2>Fasal</h2>
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+                <p>Details for section 3...</p>                
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(this.dataset.target);
+                targetSection.classList.add('active');
+            });
+        });
+    </script>
+
+</body>
+</html>
