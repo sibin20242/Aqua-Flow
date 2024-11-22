@@ -14,10 +14,15 @@ class AddStaff(View):
         return render(request,"ADMINISTRATION/addstaff.html")
 class Area(View):
     def get(self,request):
-        return render(request,"ADMINISTRATION/area.html")
+        obj = area_model.objects.all()
+        return render(request,"ADMINISTRATION/area.html", {"obj":obj})
+class view_area(View):
+    def get(self,request):
+        return render(request,"ADMINISTRATION/view_areas.html")
 class Authority(View):
     def get(self,request):
-        return render(request,"ADMINISTRATION/authority.html")
+        obj = authority_model.objects.all()
+        return render(request,"ADMINISTRATION/authority.html", {"obj":obj})
 class Changep(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/changep.html")
@@ -29,7 +34,9 @@ class EditProfile(View):
         return render(request,"ADMINISTRATION/editprofile.html")
 class Feedback(View):
     def get(self,request):
-        return render(request,"ADMINISTRATION/feedback.html")
+        obj = feedback_model.objects.all()
+        print("<<<<<<<<<<<<<<<<<<<<<<<<<<", obj )
+        return render(request,"ADMINISTRATION/feedback.html", {"obj":obj})
 class Forgetp(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/forgetp.html")
@@ -39,6 +46,17 @@ class Home(View):
 class Login(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/login.html")
+    def post(self,request):
+        username=request.POST['username']
+        password=request.POST['password']
+        login_obj=Login_model.objects.get(Username=username,Password=password)
+        if login_obj.Type=="Admin":
+            return HttpResponse('''<script>alert("login succesfully");window.location="/home"</script>''');
+        elif login_obj.Type=="Authority":
+            return HttpResponse('''<script>alert("login succesfully");window.location="/home1"</script>''');
+        else:
+         return HttpResponse('''<script>alert("login failed");window.location="/login"</script>''');
+        
 class OTP(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/otp.html")
@@ -50,13 +68,15 @@ class Sign(View):
         return render(request,"ADMINISTRATION/sign.html")
 class Staff(View):
     def get(self,request):
-        return render(request,"ADMINISTRATION/staff.html")
+        obj = staff_model.objects.all()
+        return render(request,"ADMINISTRATION/staff.html", {"obj":obj})
 class Time(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/time.html")
 class User(View):
     def get(self,request):
-        return render(request,"ADMINISTRATION/user.html")
+        obj = user_model.objects.all()
+        return render(request,"ADMINISTRATION/user.html", {"obj":obj})
 class WorkReport(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/workreport.html")
@@ -64,9 +84,9 @@ class WorkReport(View):
 # ///////////////////////////////////// AUTH /////////////////////////////////////////////
 
 
-class Area(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/area.html")
+# class Area(View):
+#     def get(self,request):
+#         return render(request,"ADMINISTRATION/area.html")
 class AssignedWork(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/assignedwork.html")        
@@ -79,18 +99,15 @@ class Complaint(View):
 class EditProfile(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/editprofile.html")
-class Feedback(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/feedback.html")
+# class Feedback(View):
+#     def get(self,request):
+#         return render(request,"ADMINISTRATION/feedback.html")
 class Forgetp(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/forgetp.html")
 class Home(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/home.html")
-class Login(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/login.html")
 class OTP(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/otp.html")
@@ -106,12 +123,12 @@ class RequestView(View):
 class Sign(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/sign.html")
-class Staff(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/staff.html")
-class User(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/user.html")
+# class Staff(View):
+#     def get(self,request):
+#         return render(request,"ADMINISTRATION/staff.html")
+# class User(View):
+#     def get(self,request):
+#         return render(request,"ADMINISTRATION/user.html")
 class WorkReport(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/workreport.html")

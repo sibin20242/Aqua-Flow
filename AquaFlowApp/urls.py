@@ -4,9 +4,11 @@ from AquaFlowApp.views import *
 urlpatterns = [
 
     # //////////////////////////////////////////// ADMIN /////////////////////////////////////////
+    path('',Login.as_view(), name="login"),
     path('add_authority/',AddAuthority.as_view(), name="add_authority"),
     path('add_staff/',AddStaff.as_view(), name="add_staff"),
     path('area/',Area.as_view(), name="area"),
+    path('view_area/',view_area.as_view(), name="view_area"),
     path('authority/',Authority.as_view(), name="authority"),
     path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
@@ -14,7 +16,6 @@ urlpatterns = [
     path('feedback/',Feedback.as_view(), name="feedback"),
     path('forgetp/',Forgetp.as_view(), name="forgetp"),
     path('home/',Home.as_view(), name="home"),
-    path('login/',Login.as_view(), name="login"),
     path('otp/',OTP.as_view(), name="otp"),
     path('profile/',Profile.as_view(), name="profile"),
     path('sign/',Sign.as_view(), name="sign"),
@@ -33,7 +34,7 @@ urlpatterns = [
     path('edit_profile/',EditProfile.as_view(), name="edit_profile"),
     path('feedback/',Feedback.as_view(), name="feedback"),
     path('forgetp/',Forgetp.as_view(), name="forgetp"),
-    path('home/',Home.as_view(), name="home"),
+    path('home1/',Home.as_view(), name="home1"),
     path('login/',Login.as_view(), name="login"),
     path('otp/',OTP.as_view(), name="otp"),
     path('profile/',Profile.as_view(), name="profile"),

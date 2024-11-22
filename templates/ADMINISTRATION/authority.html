@@ -97,6 +97,7 @@ h2 {
 .styled-table {
     width: 100%;
     border-collapse: collapse;
+    margin-left:-100px;
     font-size: 16px;
 }
 
@@ -152,14 +153,12 @@ i{
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
-  
   <!-- Main content (cards and other sections) -->
   <main id="main-content">
     
     <form class="card">
 
-      <a href="addauthority.html"><i class="fa-solid fa-user-plus"></i></a>
+      <a href="/add_authority"><i class="fa-solid fa-user-plus"></i></a>
       <div class="table-container">
         <h2>AUTHORITY</h2>
         <table class="styled-table">
@@ -168,36 +167,29 @@ i{
                     <th>S.No</th>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Address</th>
                     <th>Area</th>
+                    <th>Mail</th>
+                    <th>Phone no</th>
                     <th>Profile</th>
                     <th>Remove</th>
                 </tr>
             </thead>
             <tbody>
+              {% for i in obj %}
                 <tr>
-                    <td>1</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>101</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</td>
+                    <td>{{ i.Address }}</td>
+                    <td>{{ i.Area }}</td>
+                    <td>{{ i.Mail }}</td>
+                    <td>{{ i.Phone_no }}</td>
+                    <td><img src={{ i.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px;"></td>
                     <td><button class="remove-btn">Remove</button></td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>102</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>103</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
+               {% endfor %}
+              
             </tbody>
         </table>
 </form>

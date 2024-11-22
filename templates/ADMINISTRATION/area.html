@@ -57,6 +57,7 @@ i{
     width: 100%;
     border-collapse: collapse;
     font-size: 16px;
+    margin-left:-800px;
 }
 
 .styled-table thead tr {
@@ -102,34 +103,17 @@ i{
                 <thead>
                     <tr>
                         <th>S.No</th>
-                        <th>User Name</th>
-                        <th>Consumer number</th>
-                        <th>Phone number</th>
+                        <th>Area</th>
                         
                     </tr>
                 </thead>
                 <tbody>
+                    {% for i in obj %}
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                       
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
+                        <td>{{ forloop.counter }}</td>
+                        <td><a href="/view_area">{{ i.Area}}<a></td>
+                       </tr>
+                       {% endfor %}
             </table>
     </form>
     </form>
