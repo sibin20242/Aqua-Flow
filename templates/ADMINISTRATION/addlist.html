@@ -118,10 +118,11 @@
     /* Card styles for content */
     .card {
       display: flex;
-      justify-content: space-evenly;
+      justify-content:center;
       margin-top: 100px;
       background-color: rgba(3, 3, 69, 0.129);
-      height: 500px;
+      height:500px;
+      position: relative;
     }
 
     
@@ -172,14 +173,12 @@
       display: flex;
     }
     
-/* .table-container {
+ .table-container {
     max-width: 800px;
     margin: 0 auto;
-    background: #fff;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
+    border-radius: 8px
+} 
 
 h2 {
     text-align: center;
@@ -188,7 +187,8 @@ h2 {
 }
 
 .styled-table {
-    width: 100%;
+    width:1000px;
+    margin-left:-100px;
     border-collapse: collapse;
     font-size: 16px;
 }
@@ -198,7 +198,10 @@ h2 {
     color: #ffffff;
     text-align: left;
 }
-
+.styled-table th
+{
+  text-align: center;
+}
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
@@ -232,6 +235,12 @@ button {
 button:hover {
     background-color: rgba(2, 26, 74, 0.647); /* Change background color on hover */
 }
+i{
+  font-size: 30px;
+  position: absolute;
+  right: 200px;
+  top: 30px;
+}
   </style>
 
   <!-- Font Awesome stylesheet for icon usage -->
@@ -239,114 +248,35 @@ button:hover {
 </head>
 <body>
 
-  <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="logo.jpg" alt="Logo">
-      <span class="logo-text">AQUA FLOW</span>
-    
-    </div>
-    <span class="prof"><i class="fa-solid fa-user" style="color: #fcfcfd;"></i></span>
-  </div>
-
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="home.html">HOME</a>
-    <a href="profile.html">PROFILE</a>
-    <a href="#home">FEEDBACK</a>
-    <a href="#services">COMPLAINTS</a>
-    <a href="#chat">CHAT</a>
-    <a href="#contact">LOGOUT</a>
-  </div>
-
+  
   <!-- Main content (cards and other sections) -->
   <main id="main-content">
     <form class="card">
+      <a href="/add_staff"><i class="fa-solid fa-user-plus"></i></a>
+
       <div class="table-container">
-        <h2>USERS</h2>
+        <h2>STAFF</h2>
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th>S.No</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Area</th>
-                    <th>Profile</th>
+                    <th>Sl.no</th>
+                    <th>Username</th>
                     <th>Remove</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>101</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>102</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>103</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
+              {% for i in obj %}
+              <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ i.Username }}</td>
+                  <td><a href="/remove_addlist/{{ i.id }}">Remove</a></td>
+                  
+              </tr>
+             {% endfor %}
             </tbody>
         </table>
+        <a href="/staff">View more details</a>
 </form>
   </main>
-
-  <!-- JavaScript to control sidebar behavior -->
-  <script>
-    let isOpen = false;
-
-    function toggleSidebar() {
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    }
-
-    function openSidebar() {
-      document.getElementById("sidebar").style.width = "250px"; /* Open sidebar */
-      document.getElementById("main-content").classList.add('sidebar-open'); /* Adjust main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-bars'); /* Change to close icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-times');
-      isOpen = true;
-
-      // Add event listener for clicks outside the sidebar
-      document.addEventListener('click', handleOutsideClick);
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").style.width = "0"; /* Close sidebar */
-      document.getElementById("main-content").classList.remove('sidebar-open'); /* Reset main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-times'); /* Change back to menu icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-bars');
-      isOpen = false;
-
-      // Remove event listener for outside clicks
-      document.removeEventListener('click', handleOutsideClick);
-    }
-
-    // Function to detect clicks outside the sidebar and close it
-    function handleOutsideClick(event) {
-      const sidebar = document.getElementById('sidebar');
-      if (isOpen && !sidebar.contains(event.target) && !event.target.closest('.toggle-btn')) {
-        closeSidebar();
-      }
-    }
-  </script>
 </body>
 </html>

@@ -1,4 +1,6 @@
-class Addauthority_form(ModelForm):
+from django.views import ModelForm 
+
+class LoginForm(ModelForm):
     class Meta:
-        model = authority_model
-        fields = ('First_name', 'Mid_name', 'Last_name', 'address')
+        model = Login_model
+        fields = ('Username', 'Password')

@@ -118,10 +118,10 @@
     /* Card styles for content */
     .card {
       display: flex;
-      justify-content: space-evenly;
+      justify-content:center;
       margin-top: 100px;
       background-color: rgba(3, 3, 69, 0.129);
-      height: 500px;
+      height:500px;
       position: relative;
     }
 
@@ -187,7 +187,8 @@ h2 {
 }
 
 .styled-table {
-    width: 100%;
+    width:1000px;
+    margin-left:-100px;
     border-collapse: collapse;
     font-size: 16px;
 }
@@ -197,7 +198,10 @@ h2 {
     color: #ffffff;
     text-align: left;
 }
-
+.styled-table th
+{
+  text-align: center;
+}
 .styled-table th,
 .styled-table td {
     padding: 12px 15px;
@@ -234,8 +238,8 @@ button:hover {
 i{
   font-size: 30px;
   position: absolute;
-  right: 400px;
-  top: 100px;
+  right: 200px;
+  top: 30px;
 }
   </style>
 
@@ -248,48 +252,30 @@ i{
   <!-- Main content (cards and other sections) -->
   <main id="main-content">
     <form class="card">
-      <a href="addstaff.html"><i class="fa-solid fa-user-plus"></i></a>
+      <a href="/add_staff"><i class="fa-solid fa-user-plus"></i></a>
 
       <div class="table-container">
-        <h2>STAFF</h2>
+        <h2>AUTHORITY</h2>
         <table class="styled-table">
             <thead>
                 <tr>
-                    <th>S.No</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Area</th>
-                    <th>Profile</th>
+                    <th>Sl.no</th>
+                    <th>Username</th>
                     <th>Remove</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>101</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td>102</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>103</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td><button class="remove-btn">Remove</button></td>
-                </tr>
+              {% for i in obj %}
+              <tr>
+                  <td>{{ forloop.counter }}</td>
+                  <td>{{ i.Username }}</td>
+                  <td><a href="/remove_addlist1/{{ i.id }}">Remove</a></td>
+                  
+              </tr>
+             {% endfor %}
             </tbody>
         </table>
+        <a href="/authority">View more details</a>
 </form>
   </main>
 </body>

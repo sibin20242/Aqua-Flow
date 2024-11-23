@@ -186,7 +186,7 @@ i{
                     <td>{{ i.Mail }}</td>
                     <td>{{ i.Phone_no }}</td>
                     <td><img src={{ i.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px;"></td>
-                    <td><button class="remove-btn">Remove</button></td>
+                    <td><a href="/remove_authority/{{ i.LOGIN.id }}">Remove</a></td>
                 </tr>
                {% endfor %}
               

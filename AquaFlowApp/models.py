@@ -107,7 +107,7 @@ class application_model(models.Model):
 class complaints_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)  
     Complaints= models.CharField(max_length=100, null=True, blank=True)
-    Reply = models.FileField(max_length=100, null=True, blank=True)
+    # Reply = models.FileField(max_length=100, null=True, blank=True)
     Date = models.DateTimeField(auto_now_add=True)
 
 class feedback_model(models.Model):
@@ -128,11 +128,6 @@ class bill_model(models.Model):
     Payment_status = models.CharField(max_length=100, null=True, blank=True)
     Date = models.DateField(auto_now_add=True)
     Due_date = models.DateTimeField(auto_now_add=True)
-    
-
-
-
-
 
 
 

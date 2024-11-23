@@ -125,7 +125,8 @@ input:focus {
 </head>
 <body>
     <div class="card1">
-    <form class="card">
+        <form class="card" method='post'>
+            {%  csrf_token %}
         <h1 id="head">ADD STAFF</h1> 
         
         <div class="center">
@@ -134,27 +135,27 @@ input:focus {
         
         <div class="User"> 
             <i class="material-icons person-icon">person</i> <!-- Icon for username field -->
-            <input type="text" class="username" placeholder="Enter username"> <!-- Input for username -->
+            <input type="text" class="username" name="username"placeholder="Enter username"> <!-- Input for username -->
         </div>
         
         <div class="center">
             <label for="password">Password</label> <!-- Label for the password input -->
             <div class="pass">
                 <i class="material-icons lock-icon">lock</i> <!-- Icon for password field -->
-                <input type="password" class="password" placeholder="Enter your Password"> <!-- Input for password -->
+                <input type="password" class="password" name="pass" placeholder="Enter your Password"> <!-- Input for password -->
             </div>
         </div>
         <div class="center">
             <label for="password">Re-Password</label> <!-- Label for the password input -->
             <div class="pass">
                 <i class="material-icons lock-icon">lock</i> <!-- Icon for password field -->
-                <input type="password" class="password" placeholder="Enter your Password"> <!-- Input for password -->
+                <input type="password" class="password"  name="repass" placeholder="Enter your Password"> <!-- Input for password -->
             </div>
         </div>
         
         
         <div>
-             <button type="button" >Add</button> <!-- Button to submit the login form -->
+             <button type="submit" >Add</button> <!-- Button to submit the login form -->
         </div>
         </form>
     </div>
