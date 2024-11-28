@@ -1,34 +1,50 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="editProfile.css">
+    <link rel="stylesheet" href="{% static 'css/editProfile.css' %}">
 </head>
 <body>
     
-    <form action="" class="card">
+    <form class="card" method='post' enctype='multipart/form-data'>
+        {% csrf_token %}
         <h1>Profile</h1>
     <table>
         
             <table>
                 <tr>
-                    <td><img src="pngwing.com.png" alt="Profile photo"></td>
-                    <td><input type="text"  placeholder="First name"> <br>
-                        <input type="text"  placeholder="Middle name"><br>
-                        <input type="text"  placeholder="last name">
+                    <td>
+                        <input type="file" id="" accept="image/*" name="Profile"/>
+                        <div class="upload-container">
+                        <label for="file-input" class="upload-label">
+                            {% if val.Profile %}
+                            <img src="{{val.Profile.url}}">
+                            {% else %}
+                            <i class="upload-icon"><img src="profile.png"></i> 
+                            {% endif %}<!-- Unicode camera icon -->
+                        </label>
+                        <input type="file" id="file-input" accept="image/*" name="Profile"/>
+                        
+                    </div>
+                </td>
+                    <td><input type="text"  placeholder="First name" name="First_name" value="{{val.First_name}}"> <br>
+                        <input type="text"  placeholder="Middle name" name="Mid_name" value="{{val.Mid_name}}"> <br>
+                        <input type="text"  placeholder="last name" name="Last_name" value="{{val.Last_name}}"> <br>
                     </td>
                     </td>
                 </tr>
     </table>
-    <div><input type="number"  placeholder="Phone number"><div>
-        <div><input type="email" placeholder="E-mail"><div>
-        <div><input type="number" placeholder="Pin Code"><div>
-        <div><textarea placeholder="Address" ></textarea> </div>
-    <div> <input type="text" placeholder="Panchayath Name"></div>
-    <div><input type="text" placeholder="Admin Id"></div>
-    <div class="btn"><a href="changepassword.html"><button type="button">Change Password</button></a>
+    <div><input type="number"  placeholder="Phone number" name="Phone_no" value="{{val.Phone_no}}"><div>
+        <div><input type="email" placeholder="E-mail" name="Mail" value="{{val.Mail}}"></div>
+        <div><input type="number" placeholder="Pin Code" name="Pincode" value="{{val.Pincode}}"></div>
+        <div><textarea placeholder="Address" name="Address">{{val.Address}}</textarea> </div>
+    <div> <input type="text" placeholder="Panchayath Name" name="Panchayath_name" value="{{val.Panchayath_name}}"></div>
+    <div><input type="text" placeholder="Admin Id" name="Admin_id" value="{{c.id}}"></div>
+    <div class="btn"><a href="changepassword.html" ><button type="button">Change Password</button></a>
   <button type="submit" class="save">Save</button></div>
 </form>
 

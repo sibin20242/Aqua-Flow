@@ -192,14 +192,14 @@
       <tr>
         <td><img src="pngwing.com.png" class="img" alt="Profile photo"></td>
         <td>
-          <input type="text" placeholder="Name"> <br>
+          <input type="text" placeholder="Name" value={{c.Username}}> <br>
           <input type="text" placeholder="Phone No"><br>
           <input type="text" placeholder="Admin Id"><br>
         </td>
       </tr>
       <tr>
         <td></td>
-        <td><a href="editProfile.html"><button type="button" class="save">Edit Profile</button></a></td>
+        <td><a href="/edit_profile/{{request.session.userid}}"><button type="button" class="save">Edit Profile</button></a></td>
       </tr>
     </table>
   </form>

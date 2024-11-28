@@ -183,15 +183,16 @@
 
   <!-- Sidebar with navigation links -->
   <div class="sidebar" id="sidebar">
-    <a href="/profile">PROFILE</a>
+    <a href="/profile/{{request.session.userid}}">PROFILE</a>
     <a href="/feedback">FEEDBACK</a>
     <a href="/complaint">COMPLAINTS</a>
     <a href="/chat">CHAT</a>
-    <a href="/contact">LOGOUT</a>
+    <a href="/logout">LOGOUT</a>
   </div>
 
   <!-- Main content (cards and other sections) -->
   <main id="main-content">
+    <input type="text" value={{request.session.userid}}>
     <div class="card">
         <div>
       <div class="car"> <a href="/staff"><div class="blah"><i class="fa-solid fa-user-tie icon" style="color: #fcfcfc; font-size: 50px;"></i></div><center><p class="cent">STAFF</p></center></a></div>

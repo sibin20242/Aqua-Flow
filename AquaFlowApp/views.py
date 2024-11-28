@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect,get_object_or_404
 from django.views import View
 from django.http import HttpResponse
 from .models import * 
+from .forms import * 
 from django.http import HttpResponse
 
 
@@ -27,6 +28,8 @@ class AddAuthority(View):
             return HttpResponse('''<script>alert("Authority Added Succesfully");window.location="/authority"</script>''')
         else:
             return HttpResponse('''<script>alert("Password Not Matched");window.location="/authority"</script>''')
+
+
 
 
 class Addlist1(View):
@@ -75,13 +78,16 @@ class RemoveStaff(View):
     def get(self,request, staff_id):
         login_obj = Login_model.objects.get(id=staff_id)
         login_obj.delete()
-        return HttpResponse('''<script>alert("delete succesfully");window.location="/staff"</script>''');
+        return HttpResponse('''<script>alert("delete succesfully");window.location="/staff"</script>''')
 
 class Removeaddlist(View):
     def get(self,request, staff_id):
         login_obj = Login_model.objects.get(id=staff_id)
         login_obj.delete()
-        return HttpResponse('''<script>alert("delete succesfully");window.location="/addlist"</script>''');
+        return HttpResponse('''<script>alert("delete succesfully");window.location="/addlist"</script>''')
+
+
+
 
 
 
@@ -107,9 +113,7 @@ class Complaint(View):
         obj = complaints_model.objects.all()
         return render(request,"ADMINISTRATION/complaint.html", {"obj":obj})
         
-class EditProfile(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/editprofile.html")
+
 
 class Feedback(View):
     def get(self,request):
@@ -133,21 +137,27 @@ class Login(View):
         username=request.POST['username']
         password=request.POST['password']
         login_obj=Login_model.objects.get(Username=username,Password=password)
+        request.session['userid']=login_obj.id
+        print(request.session['userid'])
         if login_obj.Type=="Admin":
-            return HttpResponse('''<script>alert("login succesfully");window.location="/home"</script>''');
+            return HttpResponse('''<script>alert("login succesfully");window.location="/home"</script>''')
         elif login_obj.Type=="Authority":
-            return HttpResponse('''<script>alert("login succesfully");window.location="/home1"</script>''');
+            return HttpResponse('''<script>alert("login succesfully");window.location="/home1"</script>''')
         else:
-         return HttpResponse('''<script>alert("login failed");window.location="/login"</script>''');
+         return HttpResponse('''<script>alert("login failed");window.location="/login"</script>''')
+
+class Logout(View):
+    def get(self,request):
+        request.session.flush()
+        return HttpResponse('''<script>alert("logout succesfully");window.location="/"</script>''')
+        
 
 
 class OTP(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/otp.html")
 
-class Profile(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/profile.html")
+
 
 class Sign(View):
     def get(self,request):
@@ -189,9 +199,7 @@ class Changep(View):
     def get(self,request):
         return render(request,"AUTHORITY/changep.html")
 
-class EditProfile(View):
-    def get(self,request):
-        return render(request,"AUTHORITY/editprofile.html")
+
 
 class Feedback(View):
     def get(self,request):
@@ -218,8 +226,24 @@ class OTP(View):
         return render(request,"AUTHORITY/otp.html")
 
 class Profile(View):
-    def get(self,request):
-        return render(request,"AUTHORITY/profile.html")
+    def get(self,request, id):
+        c=Login_model.objects.filter(id=id).first()
+        return render(request,"AUTHORITY/profile.html", {"c":c})
+
+class EditProfile(View):
+    def get(self,request, id):
+        # c = get_object_or_404(Login_model, id=id)
+        obj=authority_model.objects.get(LOGIN=id)
+        print(obj)
+        return render(request,"AUTHORITY/editprofile.html",{'val':obj})
+    def post (self,request, id):        
+        c = get_object_or_404(authority_model, LOGIN=id)
+        ii=request.POST['First_name']
+        form=ProfileForm(request.POST,instance=c)
+        if form.is_valid():
+            form.save()
+            return render(request,"AUTHORITY/editprofile.html",{'val':c})
+
 
 class Request(View):
     def get(self,request):
