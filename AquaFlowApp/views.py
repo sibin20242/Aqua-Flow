@@ -227,8 +227,8 @@ class OTP(View):
 
 class Profile(View):
     def get(self,request, id):
-        c=Login_model.objects.filter(id=id).first()
-        return render(request,"AUTHORITY/profile.html", {"c":c})
+        c=authority_model.objects.filter(LOGIN_id=id).first()
+        return render(request,"AUTHORITY/profile.html", {"val":c})
 
 class EditProfile(View):
     def get(self,request, id):
@@ -239,7 +239,7 @@ class EditProfile(View):
     def post (self,request, id):        
         c = get_object_or_404(authority_model, LOGIN=id)
         ii=request.POST['First_name']
-        form=ProfileForm(request.POST,instance=c)
+        form=ProfileForm(request.POST, request.FILES, instance=c)
         if form.is_valid():
             form.save()
             return render(request,"AUTHORITY/editprofile.html",{'val':c})
@@ -263,3 +263,9 @@ class WorkReport(View):
     def get(self,request):
         obj = report_model.objects.all()
         return render(request,"AUTHORITY/workreport.html", {"obj":obj})
+
+class Authoritybase(View):
+    def get(self,request):
+        return render(request,"AUTHORITY/authoritybase.html")
+        
+        

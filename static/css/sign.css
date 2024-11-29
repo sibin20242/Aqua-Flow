@@ -7,7 +7,7 @@
 
 /* Styling for the body */
 body {
-    background-image:url(bg.jpg); /* Set background image */
+    background-image:url(../img/bg.jpg); /* Set background image */
     display: flex; /* Use flexbox layout */
     justify-content: center; /* Center items horizontally */
     height: 100vh; /* Full viewport height */

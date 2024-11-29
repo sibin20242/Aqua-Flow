@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -61,6 +62,25 @@
 </style>
 
 <body>
+
+    <!-- Navbar with logo and title in the center -->
+  <div class="navbar">
+    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
+    <div class="logo">
+      <img src="{% static "img/logo.jpg" %}" alt="Logo">
+      <span class="logo-text">AQUA FLOW</span>
+    </div>
+  </div>
+
+  <!-- Sidebar with navigation links -->
+  <div class="sidebar" id="sidebar">
+    <a href="/profile/{{request.session.userid}}">PROFILE</a>
+    <a href="/feedback">FEEDBACK</a>
+    <a href="/complaint">COMPLAINTS</a>
+    <a href="/chat">CHAT</a>
+    <a href="/logout">LOGOUT</a>
+  </div>
+  
 <div class="card">
     <div class="con">
 <div class="profile">    

@@ -51,6 +51,8 @@ urlpatterns = [
     path('sign/',Sign.as_view(), name="sign"),
     path('workreport/',WorkReport.as_view(), name="workreport"),
     path('logout/',Logout.as_view(), name="logout"),
+    path('authoritybase/',Authoritybase.as_view(), name="authoritybase"),
+
 
 
 ]

@@ -1,3 +1,7 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
+
+
 {% load static %}
 
 <!DOCTYPE html>
@@ -7,24 +11,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/editProfile.css' %}">
+    
 </head>
 <body>
+    <!-- Navbar with logo and title in the center -->
+    <main id="main-content">
     
     <form class="card" method='post' enctype='multipart/form-data'>
         {% csrf_token %}
-        <h1>Profile</h1>
+        <h1>DETAILS</h1>
     <table>
         
             <table>
                 <tr>
                     <td>
-                        <input type="file" id="" accept="image/*" name="Profile"/>
                         <div class="upload-container">
                         <label for="file-input" class="upload-label">
                             {% if val.Profile %}
                             <img src="{{val.Profile.url}}">
                             {% else %}
-                            <i class="upload-icon"><img src="profile.png"></i> 
+                            <i class="upload-icon"><img src=""></i> 
                             {% endif %}<!-- Unicode camera icon -->
                         </label>
                         <input type="file" id="file-input" accept="image/*" name="Profile"/>
@@ -43,10 +49,10 @@
         <div><input type="number" placeholder="Pin Code" name="Pincode" value="{{val.Pincode}}"></div>
         <div><textarea placeholder="Address" name="Address">{{val.Address}}</textarea> </div>
     <div> <input type="text" placeholder="Panchayath Name" name="Panchayath_name" value="{{val.Panchayath_name}}"></div>
-    <div><input type="text" placeholder="Admin Id" name="Admin_id" value="{{c.id}}"></div>
-    <div class="btn"><a href="changepassword.html" ><button type="button">Change Password</button></a>
+    <div class="btun"><a href="changepassword.html" ><button type="button">Change Password</button></a>
   <button type="submit" class="save">Save</button></div>
 </form>
-
+</main>
 </body>
 </html>
+{% endblock %}
