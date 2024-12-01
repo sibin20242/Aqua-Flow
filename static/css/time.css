@@ -1,0 +1,129 @@
+/* body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    height: 100vh; 
+    margin: 0;
+    background-color: #f4f4f4;
+ } */
+.body1 {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-x: hidden; /* Prevents horizontal scrolling */
+    background-image: url(../img/bg.jpg);
+    background-position: center;
+  background-size: cover;
+  display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+ .navbar {
+    display: flex;
+    justify-content: center; /* Centers the content horizontally */
+    align-items: center; /* Centers content vertically */
+    padding-top: 25px;
+    background-color: #0B0421;
+    box-shadow: 10px 8px 10px rgba(0, 0, 0, 0.503);
+    height: 50px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Logo and text centered */
+  .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center the logo and title */
+  }
+
+  .logo img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-text {
+    color: rgb(255, 255, 255);
+    font-size: 24px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+#calendar {
+    width: 350px;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 10);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#month {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #1c034b;
+    color: white;
+}
+
+#month button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+#weekdays {
+    display: flex;
+    background-color: #0b094d;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+#weekdays div {
+    flex: 1;
+}
+
+#days {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+#days div {
+    width: 14.28%;
+    padding: 10px 0;
+    text-align: center;
+    margin: 2px 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#days div:hover {
+    background-color: #e9c46a;
+}
+
+#days div.inactive {
+    color: #aaa;
+}

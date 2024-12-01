@@ -4,7 +4,7 @@
 
 {% load static %}
 
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,8 +16,8 @@
 <body>
     <!-- Navbar with logo and title in the center -->
     <main id="main-content">
-    
-    <form class="card" method='post' enctype='multipart/form-data'>
+    <div class="body1">
+    <form class="card1" method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         <h1>DETAILS</h1>
     <table>
@@ -26,13 +26,13 @@
                 <tr>
                     <td>
                         <div class="upload-container">
-                        <label for="file-input" class="upload-label">
+                        
                             {% if val.Profile %}
                             <img src="{{val.Profile.url}}">
                             {% else %}
                             <i class="upload-icon"><img src=""></i> 
                             {% endif %}<!-- Unicode camera icon -->
-                        </label>
+                       
                         <input type="file" id="file-input" accept="image/*" name="Profile"/>
                         
                     </div>
@@ -52,6 +52,7 @@
     <div class="btun"><a href="changepassword.html" ><button type="button">Change Password</button></a>
   <button type="submit" class="save">Save</button></div>
 </form>
+</div>
 </main>
 </body>
 </html>

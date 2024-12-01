@@ -5,12 +5,13 @@
     padding: 0;
     height: 100vh;
     overflow-x: hidden; /* Prevents horizontal scrolling */
-    background-image: url(bg.jpg);
+    background-image: url(../img/bg.jpg);
     background-position: center;
   background-size: cover;
     
   }
 
+  /*  */
   /* Navbar styles */
   .navbar {
     display: flex;
@@ -56,56 +57,8 @@
   }
 
   /* Toggle button for sidebar */
-  .toggle-btn {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 24px;
-    cursor: pointer;
-    color: white;
-    z-index: 3;
-  }
-
+  
   /* Sidebar styles */
-  .sidebar {
-    height: 100%;
-    width: 0; /* Hidden by default */
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: #0B0421;
-    overflow-x: hidden; /* Disable horizontal scrolling */
-    transition: 0.5s;
-    padding-top: 60px; /* Space for navbar */
-    z-index: 1;
-  }
-
-  .sidebar a {
-      margin-top: 80px;
-    padding: 10px 15px;
-    text-decoration: none; /* No underline */
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: 0.3s;
-  }
-
-  .sidebar a:hover {
-    font-size: 20px;
-    color: rgb(208, 37, 37);
-  }
-
-  /* Close button inside sidebar */
-  .sidebar .close-btn {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    font-size: 36px;
-    margin-left: 50px;
-    cursor: pointer;
-    color: white;
-  }
 
   /* Card styles for content */
   .card {

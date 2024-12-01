@@ -1,3 +1,5 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
 {% load static %}
 
 <!DOCTYPE html>
@@ -7,28 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static 'css/editProfile.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="{% static "img/logo.jpg" %}" alt="Logo">
-      <span class="logo-text">AQUA FLOW</span>
-    </div>
-  </div>
-
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="/profile/{{request.session.userid}}">PROFILE</a>
-    <a href="/feedback">FEEDBACK</a>
-    <a href="/complaint">COMPLAINTS</a>
-    <a href="/chat">CHAT</a>
-    <a href="/logout">LOGOUT</a>
-  </div>
+ <div class="body1">
   <main id="main-content">
-    <form class="card" method='post' enctype='multipart/form-data'>
+    <form class="card1" method='post' enctype='multipart/form-data'>
         {% csrf_token %}
         <h1>PROFILE</h1>
     <table>
@@ -37,13 +22,13 @@
                 <tr>
                     <td>
                         <div class="upload-container">
-                        {% comment %} <label for="file-input" class="upload-label"> {% endcomment %}
                             {% if val.Profile %}
-                            <img src="{{val.Profile.url}}">
+                            <div class="pic"><img src="{{val.Profile.url}}"> </div>
                             {% else %}
                             <i class="upload-icon"><img src={% static "profile.png"%}></i> 
                             {% endif %}<!-- Unicode camera icon -->
-                        </label>
+                        
+                     
                         <input type="file" id="file-input" accept="image/*" name="Profile"/>
                     </div>
                 </td>
@@ -64,6 +49,7 @@
     <div class="btn"><a href="/edit_profile/{{request.session.userid}}" ><button type="button">EDIT</button></a> </div>
  
 </form>
+</div>
 </main>
 <script>
     let isOpen = false;
@@ -108,3 +94,4 @@
   </script>
 </body>
 </html>
+{% endblock %}

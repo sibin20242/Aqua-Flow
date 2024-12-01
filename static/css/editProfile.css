@@ -1,61 +1,16 @@
-*{
+/* *{
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-}
+} */
 
-body{
+.body1{
     display: flex;
     justify-content: center;
-    height: 100vh;
     align-items: center ;
-    background-position: center;
-    background-size: cover;
-    background-image: url(../img/bg.jpg);
 
 }
-.navbar {
-    display: flex;
-    justify-content: center; /* Centers the content horizontally */
-    align-items: center; /* Centers content vertically */
-    padding-top: 25px;
-    background-color: #0B0421;
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.503);
-    height: 50px;
-    position: relative;
-    z-index: 2;
-  }
- 
- 
-  /* Logo and text centered */
-  .logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%); /* Center the logo and title */
-  }
 
-  .logo img {
-    height: 30px;
-    width: 30px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid white;
-    margin-right: 10px;
-  }
-
-  .logo-text {
-    color: rgb(255, 255, 255);
-    font-size: 24px;
-    font-weight: bold;
-  }
-
-  /* Toggle button for sidebar */
-  
-  /* Sidebar styles */
-  
 
 
 
@@ -69,7 +24,7 @@ body{
     position: relative;
 }
 
-img{
+.upload-container img{
     position: absolute;
     height: 120px;
     width: 120px;
@@ -96,10 +51,10 @@ img{
 
 
 
-.upload-icon {
+/* .upload-icon {
     font-size: 24px;
-}
-.card{
+} */
+.card1{
     border: 2px black solid;
     padding: 50px;
     background-color: rgba(252, 248, 248, 0.604);

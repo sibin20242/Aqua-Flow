@@ -1,98 +1,78 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-   
+    <link rel="stylesheet" href="{% static 'css/user.css' %}">
     <title>Request</title>
 </head>
-<style>
-    /* General body styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      overflow-x: hidden; /* Prevents horizontal scrolling */
-      background-image: url(bg.jpg);
-      background-position: center;
-    background-size: cover;
-    justify-content:center;
-    align-items: center;
-          }
-          .card {
-     display: flex;
-            justify-content:center;
-      margin-top: 15px;
-      background-color: rgba(66, 138, 247, 0.74);
-     width: 400px;
-      height: 400px;
-      align-items: center;
-    }
-        .profile {
-            display: flex;
-            align-items: center;
-            margin: 10px ;
-        }
-        .profile img {
-            width: 40px;
-            height: 40px;
-            margin-right:10px;
-        }
-        .con a {
-            color: #0e0d0d;
-            text-decoration: none;
-            font-size: 24px;
-            cursor: pointer;
-        }
-        .con a:hover {
-            color: #cccccc;
-        }
-    .con {
-            width: 20%;
-            padding: 10px;
-            /* background-color: #0B0421; */
-            color: #080808;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-</style>
 
 <body>
 
     <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="{% static "img/logo.jpg" %}" alt="Logo">
-      <span class="logo-text">AQUA FLOW</span>
-    </div>
-  </div>
-
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="/profile/{{request.session.userid}}">PROFILE</a>
-    <a href="/feedback">FEEDBACK</a>
-    <a href="/complaint">COMPLAINTS</a>
-    <a href="/chat">CHAT</a>
-    <a href="/logout">LOGOUT</a>
-  </div>
-  
-<div class="card">
+ <div class="body1">
+  <div class="container">
+    <!-- Sidebar with profile links -->
     <div class="con">
-<div class="profile">    
-<a href="requestview.html"> Ismail</a> </div>
-<div class="profile">  
-<a href="requestview.html">Shanid</a></div>
-<div class="profile"> 
- <a href="requestview.html">Fasal</a>
+        <div class="profile">
+            {% for i in obj %}
+            <img src={{ i.USER.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px; border-radius:50%">
+            <a class="nav-link" data-target="section1">{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</a>
         </div>
-    </div> 
+        
+    </div>
+
+    <!-- Divider line -->
+    <div class="card"></div>
+
+        <!-- Main content section -->
+        <div class="content">
+            <div id="section1" class="section">
+              <h2>APPLICATION</h2>
+                <p><b>{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</b></p>
+                
+                {% for i in obj %}
+                <p><b>Application_no : </b>{{ forloop.counter }}</p>  
+                  {% endfor %}
+                <p><b>Panchayath_name : </b>{{ i.Panchayath_name }}</p>
+                <p><b>Father_name : </b>{{ i.Father_name }}</p>
+                <p><b>Mother_name : </b>{{ i.Mother_name }}</p>
+                <p><b>Address : </b>{{ i.Address }}</p>
+                <p><b>Phone_no : </b>{{ i.Phone_no }}</p>
+                <p><b>Family_members : </b>{{ i.Family_members }}</p>
+                <p><b>Adhar_no : </b>{{ i.Adhar_no }}</p>
+                <p><b>Rationcard : </b>{{ i.Rationcard }}</p>
+                <p><b>Neighbourconsumer_no : </b>{{ i.Neighbourconsumer_no }}</p>
+                <p><b>Cast : </b>{{ i.Cast }}</p>
+                
+                <p><b>Aadhaar</b></p>
+                <img src={{ i.Aadhaar_photo.url }} alt="Aadhaar Picture" style="width: 100px; height: 100px; ">
+                <p><b>RationCard</b></p>
+                <img src={{ i.Rationcard_photo.url }} alt="RationCard Picture" style="width: 100px; height: 100px; ">
+                <p><b>OwnershipCertificate</b></p>
+                <img src={{ i.Ownershipcertificate_photo.url }} alt="Ownershipcertificate Picture" style="width: 100px; height: 100px; ">
+        </div>
+    </div>
+{% endfor %}
 </div>
+<script>
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  navLinks.forEach(link => {
+      link.addEventListener('click', function(event) {
+          event.preventDefault();
+
+          document.querySelectorAll('.section').forEach(section => {
+              section.classList.remove('active');
+          });
+
+          const targetSection = document.getElementById(this.dataset.target);
+          targetSection.classList.add('active');
+      });
+  });
+</script>
 </body>
 </html>
-</body>
-</html>
+{% endblock %}

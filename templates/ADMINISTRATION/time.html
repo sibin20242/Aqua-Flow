@@ -1,33 +1,16 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
 {% load static %}
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monthly Calendar</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{% static 'css/time.css' %}">
 </head>
-<body>
-
-    <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="logo.jpg" alt="Logo">
-      <span class="logo-text">AQUA FLOW</span>
-    
-    </div>
-    <span class="prof"><i class="fa-solid fa-user" style="color: #fcfcfd;"></i></span>
-  </div>
-
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="/profile">PROFILE</a>
-    <a href="/feedback">FEEDBACK</a>
-    <a href="/complaint">COMPLAINTS</a>
-    <a href="#chat">CHAT</a>
-    <a href="/logout">LOGOUT</a>
-  </div>
+<body> 
+<div class="body1">
     <div id="calendar">
         <div id="month">
             <button id="prev">&lt;</button>
@@ -45,6 +28,68 @@
         </div>
         <div id="days"></div>
     </div>
-    <script src="javascript.js"></script>
+</div>
+    <script>const monthNames = [
+      "January", "February", "March", "April", "May", "June", 
+      "July", "August", "September", "October", "November", "December"
+  ];
+  
+  let currentDate = new Date();
+  
+  function renderCalendar() {
+      const daysContainer = document.getElementById('days');
+      const monthName = document.getElementById('month-name');
+      const currentYear = currentDate.getFullYear();
+      const currentMonth = currentDate.getMonth();
+      
+      // Corrected template literal syntax
+      monthName.textContent = `${monthNames[currentMonth]} ${currentYear}`;
+      
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+      const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+  
+      daysContainer.innerHTML = "";
+      
+      // Fill in days from the previous month
+      for (let x = firstDay; x > 0; x--) {
+          const day = document.createElement('div');
+          day.classList.add('inactive');
+          day.textContent = daysInPrevMonth - x + 1;
+          daysContainer.appendChild(day);
+      }
+      
+      // Fill in days of the current month
+      for (let i = 1; i <= daysInMonth; i++) {
+          const day = document.createElement('div');
+          day.textContent = i;
+          daysContainer.appendChild(day);
+      }
+  
+      // Calculate the number of days needed to fill the last row
+      const totalBoxes = firstDay + daysInMonth;
+      const totalDaysInCalendar = 42; // 6 rows of 7 days
+      const remainingBoxes = totalDaysInCalendar - totalBoxes; 
+      
+      // Fill in days from the next month
+      for (let j = 1; j <= remainingBoxes; j++) {
+          const day = document.createElement('div');
+          day.classList.add('inactive');
+          day.textContent = j;
+          daysContainer.appendChild(day);
+      }
+  }
+  
+  function changeMonth(direction) {
+      currentDate.setMonth(currentDate.getMonth() + direction);
+      renderCalendar();
+  }
+  
+  document.getElementById('prev').addEventListener('click', () => changeMonth(-1));
+  document.getElementById('next').addEventListener('click', () => changeMonth(1));
+  
+  renderCalendar();
+  </script>
 </body>
 </html>
+{% endblock %}

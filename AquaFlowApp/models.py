@@ -68,6 +68,7 @@ class assignedwork_model(models.Model):
 
 
 class report_model(models.Model):
+    
     STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
     Consumer_no = models.CharField(max_length=100, null=True, blank=True)
     Complaint_no = models.CharField(max_length=100, null=True, blank=True)
@@ -99,7 +100,7 @@ class application_model(models.Model):
     Rationcard = models.CharField(max_length=100, null=True, blank=True)
     Neighbourconsumer_no = models.IntegerField(null=True, blank=True)
     Cast = models.CharField(max_length=100, null=True, blank=True)
-    Adhar_photo = models.FileField(upload_to='photo/',null=True, blank=True)
+    Aadhaar_photo = models.FileField(upload_to='photo/',null=True, blank=True)
     Rationcard_photo = models.FileField(upload_to='photo/',null=True, blank=True)
     Ownershipcertificate_photo = models.FileField(upload_to='photo/', null=True, blank=True)
    
@@ -131,6 +132,14 @@ class bill_model(models.Model):
 
 
 
+    
+    
+    
+    
+    
+    
+    
+    
 
 
     

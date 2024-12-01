@@ -1,96 +1,25 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Navigation</title>
-    <style>
-        body {
-            display: flex;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            margin: 0;
-        }
-        .container {
-            display: flex;
-            width: 100%;
-        }
-        .con {
-            width: 20%;
-            padding: 10px;
-            background-color: #0B0421;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .card {
-            width: 2px; /* Thin vertical divider */
-            background-color: #333; /* Divider color */
-            margin: 0 10px; /* Space around the divider */
-        }
-        .content {
-            width: 78%;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .section {
-            display: none;
-        }
-        .active {
-            display: block;
-        }
-        .profile {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-        }
-        .profile img {
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-        .con a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 20px;
-            cursor: pointer;
-        }
-        .con a:hover {
-            color: #cccccc;
-        }
-    </style>
-</head>
-<body>
+
+<link rel="stylesheet" href="{% static 'css/user.css' %}">  
+
+<div class="body1">
 
     <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="{% static "img/logo.jpg" %}" alt="Logo">
-      <span class="logo-text">AQUA FLOW</span>
-    </div>
-  </div>
-
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="/profile/{{request.session.userid}}">PROFILE</a>
-    <a href="/feedback">FEEDBACK</a>
-    <a href="/complaint">COMPLAINTS</a>
-    <a href="/chat">CHAT</a>
-    <a href="/logout">LOGOUT</a>
-  </div>
-
     <div class="container">
+        
         <!-- Sidebar with profile links -->
         <div class="con">
             <div class="profile">
                 {% for i in obj %}
+                <!-- Assign a unique data-target for each user, like section-{{ forloop.counter }} -->
                 <img src={{ i.STAFF.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px; border-radius:50%">
-                <a class="nav-link" data-target="section1">{{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}</a>
+                <a class="nav-link" data-target="section-{{ forloop.counter }}">
+                    {{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}
+                </a>
+                {% endfor %}
             </div>
-            
         </div>
 
         <!-- Divider line -->
@@ -98,32 +27,39 @@
 
         <!-- Main content section -->
         <div class="content">
-            <div id="section1" class="section">
+            {% for i in obj %}
+            <!-- Give each section a unique ID, e.g., section-1, section-2, etc. -->
+            <div id="section-{{ forloop.counter }}" class="section">
                 <h2>{{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}</h2>
                 <p><b>Consumer no : </b>{{ i.Consumer_no }}</p>
                 <p><b>Complaint no : </b>{{ i.Complaint_no }}</p>
-                <img src={{ i.Upload_photo.url }} alt="Profile Picture" style="width: 100px; height: 100px; ">
-            
+                <img src={{ i.Upload_photo.url }} alt="Profile Picture" style="width: 100px; height: 100px;">
                 <b><p>description : {{ i.description }}</p></b>
+            </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
-    <script>
-        const navLinks = document.querySelectorAll('.nav-link');
+</div>
 
-        navLinks.forEach(link => {
-            link.addEventListener('click', function(event) {
-                event.preventDefault();
+<script>
+    const navLinks = document.querySelectorAll('.nav-link');
 
-                document.querySelectorAll('.section').forEach(section => {
-                    section.classList.remove('active');
-                });
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
 
-                const targetSection = document.getElementById(this.dataset.target);
-                targetSection.classList.add('active');
+            // Remove 'active' class from all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
             });
-        });
-    </script>
 
-</body>
-</html>
+            // Get the target section from the data-target of the clicked link
+            const targetSection = document.getElementById(this.dataset.target);
+
+            // Add 'active' class to the targeted section
+            targetSection.classList.add('active');
+        });
+    });
+</script>
+
+{% endblock %}

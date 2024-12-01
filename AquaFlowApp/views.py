@@ -247,7 +247,8 @@ class EditProfile(View):
 
 class Request(View):
     def get(self,request):
-        return render(request,"AUTHORITY/request.html")
+        obj = application_model.objects.all()
+        return render(request,"AUTHORITY/request.html" , {"obj":obj})
 
 class RequestView(View):
     def get(self,request):
@@ -262,6 +263,7 @@ class Sign(View):
 class WorkReport(View):
     def get(self,request):
         obj = report_model.objects.all()
+        print("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%", obj)
         return render(request,"AUTHORITY/workreport.html", {"obj":obj})
 
 class Authoritybase(View):

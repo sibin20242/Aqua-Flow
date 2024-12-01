@@ -4,63 +4,26 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Simple Navbar with Sidebar</title>
+        <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+        {% comment %} <link rel="stylesheet" href="{% static 'css/time.css' %}"> {% endcomment %}
+        {% comment %} <link rel="stylesheet" href="{% static 'css/user.css' %}"> {% endcomment %}
+
         
 </head>
 <body>
 
 <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
+    
     <div class="logo">
-      <img src="{% static "img/logo.jpg" %}" alt="Logo">
+     
+      <img src="{% static "img/logo.jpg" %}" alt="Logo"> 
       <span class="logo-text">AQUA FLOW</span>
     </div>
   </div>
+  
 
   <!-- Sidebar with navigation links -->
-  
-  <main id="main-content">
-  </main>
-  <script>
-    let isOpen = false;
-
-    function toggleSidebar() {
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    }
-
-    function openSidebar() {
-      document.getElementById("sidebar").style.width = "250px"; /* Open sidebar */
-      document.getElementById("main-content").classList.add('sidebar-open'); /* Adjust main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-bars'); /* Change to close icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-times');
-      isOpen = true;
-
-      // Add event listener for clicks outside the sidebar
-      document.addEventListener('click', handleOutsideClick);
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").style.width = "0"; /* Close sidebar */
-      document.getElementById("main-content").classList.remove('sidebar-open'); /* Reset main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-times'); /* Change back to menu icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-bars');
-      isOpen = false;
-
-      // Remove event listener for outside clicks
-      document.removeEventListener('click', handleOutsideClick);
-    }
-
-    // Function to detect clicks outside the sidebar and close it
-    function handleOutsideClick(event) {
-      const sidebar = document.getElementById('sidebar');
-      if (isOpen && !sidebar.contains(event.target) && !event.target.closest('.toggle-btn')) {
-        closeSidebar();
-      }
-    }
-  </script>
+   
   {% block body %}
 
   {% endblock %}
