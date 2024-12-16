@@ -15,7 +15,7 @@ class authority_model(models.Model):
     AREA = models.ForeignKey(area_model, on_delete=models.CASCADE, null=True, blank=True)
     First_name = models.CharField(max_length=100, null=True, blank=True)
     Mid_name = models.CharField(max_length=100, null=True, blank=True)
-    Last_name = models.CharField(max_length=100, null=True, blank=True)
+    Last_name = models.CharField(max_length=100 ,null=True, blank=True)
     Area = models.CharField(max_length=100, null=True, blank=True)
     Mail = models.CharField(max_length=100, null=True, blank=True)
     Pincode = models.IntegerField(null=True, blank=True)
@@ -61,10 +61,6 @@ class time_model(models.Model):
     description = models.CharField(max_length=100, null=True, blank=True)
 
 
-class assignedwork_model(models.Model):
-    STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
-    Area = models.CharField(max_length=100, null=True, blank=True)
-    Work = models.CharField(max_length=100, null=True, blank=True)
 
 
 class report_model(models.Model):
@@ -104,6 +100,11 @@ class application_model(models.Model):
     Rationcard_photo = models.FileField(upload_to='photo/',null=True, blank=True)
     Ownershipcertificate_photo = models.FileField(upload_to='photo/', null=True, blank=True)
    
+class assignedwork_model(models.Model):
+    STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
+    Area = models.CharField(max_length=100, null=True, blank=True)
+    Work = models.CharField(max_length=100, null=True, blank=True)
+
 
 class complaints_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)  

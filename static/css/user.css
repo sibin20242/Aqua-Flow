@@ -8,6 +8,67 @@
   display: flex;
   width: 100%;
 }
+.card1 {
+  width: 300px; /* Thin vertical divider */
+  height: 500px;
+  position: absolute;
+  right: 100px;
+  background-color: #130230; /* Divider color */
+  margin:  10px; /* Space around the divider */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right:150px;
+  margin-top: 100px;
+  border-radius: 10px;
+  font-size: 80px;
+
+}
+.button1 {
+  padding: 10px; /* Inner spacing for button */
+  margin-top: 10px; /* Space above the button */
+  background-color: rgb(6, 108, 25); /* Background color (note: incomplete rgba) */
+  color: rgb(34, 239, 12); /* Black text color */
+  width: 100px; /* Fixed width for button */
+  transition: 0.5s ease; /* Smooth transition for hover effects */
+  border-radius: 15px; /* Rounded corners for button */
+  margin-bottom: 10px; /* Space below the button */
+  border: none; /* No border */
+}
+i{
+  font-size: 30px;
+  position: absolute;
+  right: 200px;
+  top: 30px;
+  }
+.car {
+  height: 50px;
+  width: 50px;
+  background-color: #0B0421;
+  margin-top: 30px;
+  border-radius: 20px;
+  box-shadow: 10px 20px 5px rgba(0, 0, 0, 0.503);
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  transition: 0.5s ease;
+}
+.com {
+  height: 50px;
+  width: 50px;
+  background-color: #9f9595;
+  margin-top: 30px;
+  border-radius: 20px;
+  box-shadow: 10px 20px 5px rgba(0, 0, 0, 0.503);
+  padding: 100px;
+  display: flex;
+  justify-content: center;
+  transition: 0.5s ease;
+}
+
+.car:hover{
+    transform: scale(1.1);
+}
 .con {
   width: 20%;
   padding: 10px;
@@ -38,13 +99,15 @@
   flex-direction: column; 
   align-items: center;
   margin: 10px 0;
+  border-radius: 100px;
 }
-
 .profile img {
   width: 50px; 
   height: 50px;
   margin-bottom: 10px; 
+  border-radius: 100px;
 }
+
 
 .con a {
   color: #ffffff;

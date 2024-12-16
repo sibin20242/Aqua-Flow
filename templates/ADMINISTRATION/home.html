@@ -1,21 +1,22 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Navbar with Sidebar</title>
+  <link rel="stylesheet" href="{% static 'css/home1.css' %}">
 
-  <style>
-    /* General body styles */
+
+  {% comment %} <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       height: 100vh;
       overflow-x: hidden; /* Prevents horizontal scrolling */
-      background-image: url(bg.jpg);
+      background-image: url(../img/bg.jpg);
       background-position: center;
-    background-size: cover;
+      background-size: cover;
       
     }
 
@@ -182,7 +183,7 @@
       padding: 100px;
       display: flex;
     }
-  </style>
+  </style> {% endcomment %}
 
   <!-- Font Awesome stylesheet for icon usage -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -193,7 +194,7 @@
   <div class="navbar">
     <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
     <div class="logo">
-      <img src="logo.jpg" alt="Logo">
+      <img src="{% static "img/logo.jpg" %}" alt="Logo">
       <span class="logo-text">AQUA FLOW</span>
     
     </div>

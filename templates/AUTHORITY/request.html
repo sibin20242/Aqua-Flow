@@ -12,67 +12,86 @@
 <body>
 
     <!-- Navbar with logo and title in the center -->
- <div class="body1">
-  <div class="container">
-    <!-- Sidebar with profile links -->
-    <div class="con">
-        <div class="profile">
-            {% for i in obj %}
-            <img src={{ i.USER.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px; border-radius:50%">
-            <a class="nav-link" data-target="section1">{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</a>
-        </div>
-        
-    </div>
+    <div class="body1">
+        <div class="container">
+            <!-- Sidebar with profile links -->
+            <div class="con">
+                <div class="profile">
+                    {% for i in obj %}
+                    {% if i.Profile %}
+                    <img src="{{ i.USER.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
+                    {% else %}
+                    <span>No Profile Picture</span>
+                    {% endif %}
+                    <a class="nav-link" data-target="section-{{ forloop.counter }}">{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
 
-    <!-- Divider line -->
-    <div class="card"></div>
+            <!-- Divider line -->
+            <div class="card"></div>
 
-        <!-- Main content section -->
-        <div class="content">
-            <div id="section1" class="section">
-              <h2>APPLICATION</h2>
-                <p><b>{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</b></p>
-                
+            <!-- Main content section -->
+            <div class="content">
                 {% for i in obj %}
-                <p><b>Application_no : </b>{{ forloop.counter }}</p>  
-                  {% endfor %}
-                <p><b>Panchayath_name : </b>{{ i.Panchayath_name }}</p>
-                <p><b>Father_name : </b>{{ i.Father_name }}</p>
-                <p><b>Mother_name : </b>{{ i.Mother_name }}</p>
-                <p><b>Address : </b>{{ i.Address }}</p>
-                <p><b>Phone_no : </b>{{ i.Phone_no }}</p>
-                <p><b>Family_members : </b>{{ i.Family_members }}</p>
-                <p><b>Adhar_no : </b>{{ i.Adhar_no }}</p>
-                <p><b>Rationcard : </b>{{ i.Rationcard }}</p>
-                <p><b>Neighbourconsumer_no : </b>{{ i.Neighbourconsumer_no }}</p>
-                <p><b>Cast : </b>{{ i.Cast }}</p>
-                
-                <p><b>Aadhaar</b></p>
-                <img src={{ i.Aadhaar_photo.url }} alt="Aadhaar Picture" style="width: 100px; height: 100px; ">
-                <p><b>RationCard</b></p>
-                <img src={{ i.Rationcard_photo.url }} alt="RationCard Picture" style="width: 100px; height: 100px; ">
-                <p><b>OwnershipCertificate</b></p>
-                <img src={{ i.Ownershipcertificate_photo.url }} alt="Ownershipcertificate Picture" style="width: 100px; height: 100px; ">
+                <div id="section-{{ forloop.counter }}" class="section">
+                    <h2>APPLICATION</h2>
+                    <p><b>{{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</b></p>
+
+                    <p><b>Application_no : </b>{{ forloop.counter }}</p>
+                    <p><b>Panchayath_name : </b>{{ i.Panchayath_name }}</p>
+                    <p><b>Father_name : </b>{{ i.Father_name }}</p>
+                    <p><b>Mother_name : </b>{{ i.Mother_name }}</p>
+                    <p><b>Address : </b>{{ i.Address }}</p>
+                    <p><b>Phone_no : </b>{{ i.Phone_no }}</p>
+                    <p><b>Family_members : </b>{{ i.Family_members }}</p>
+                    <p><b>Adhar_no : </b>{{ i.Adhar_no }}</p>
+                    <p><b>Rationcard : </b>{{ i.Rationcard }}</p>
+                    <p><b>Neighbourconsumer_no : </b>{{ i.Neighbourconsumer_no }}</p>
+                    <p><b>Cast : </b>{{ i.Cast }}</p>
+
+                    <p><b>Aadhaar</b></p>
+                    {% if i.Aadhaar_photo %}
+                    <img src="{{ i.Aadhaar_photo.url }}" alt="Aadhaar Picture" style="width: 100px; height: 100px;">
+                    {% else %}
+                    <span>No Aadhaar Photo Available</span>
+                    {% endif %}
+                    
+                    <p><b>RationCard</b></p>
+                    {% if i.Rationcard_photo %}
+                    <img src="{{ i.Rationcard_photo.url }}" alt="RationCard Picture" style="width: 100px; height: 100px;">
+                    {% else %}
+                    <span>No RationCard Photo Available</span>
+                    {% endif %}
+
+                    <p><b>OwnershipCertificate</b></p>
+                    {% if i.Ownershipcertificate_photo %}
+                    <img src="{{ i.Ownershipcertificate_photo.url }}" alt="Ownershipcertificate Picture" style="width: 100px; height: 100px;">
+                    {% else %}
+                    <span>No Ownership Certificate Available</span>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-{% endfor %}
-</div>
-<script>
-  const navLinks = document.querySelectorAll('.nav-link');
 
-  navLinks.forEach(link => {
-      link.addEventListener('click', function(event) {
-          event.preventDefault();
+    <script>
+        const navLinks = document.querySelectorAll('.nav-link');
 
-          document.querySelectorAll('.section').forEach(section => {
-              section.classList.remove('active');
-          });
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
 
-          const targetSection = document.getElementById(this.dataset.target);
-          targetSection.classList.add('active');
-      });
-  });
-</script>
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('active');
+                });
+
+                const targetSection = document.getElementById(this.dataset.target);
+                targetSection.classList.add('active');
+            });
+        });
+    </script>
 </body>
 </html>
 {% endblock %}

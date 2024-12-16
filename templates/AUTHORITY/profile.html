@@ -17,22 +17,22 @@
         {% csrf_token %}
         <h1>PROFILE</h1>
     <table>
-        
+
             <table>
                 <tr>
                     <td>
                         <div class="upload-container">
-                            {% if val.Profile %}
-                            <div class="pic"><img src="{{val.Profile.url}}"> </div>
-                            {% else %}
-                            <i class="upload-icon"><img src={% static "profile.png"%}></i> 
-                            {% endif %}<!-- Unicode camera icon -->
+                          {% if val.Profile %}
+                                    <img src="{{ val.Profile.url }}" alt="Profile Picture" style="width: 120px; height: 120px;">
+                                {% else %}
+                                    <i class="upload-icon"><img src="{% static 'img/profile.png' %}" alt="Default Profile"></i>
+                                {% endif %}<!-- Unicode camera icon -->
                         
-                     
+      
                         <input type="file" id="file-input" accept="image/*" name="Profile"/>
                     </div>
                 </td>
-                    <td class="td">{{val.First_name}} {{val.Mid_name}} {{val.Last_name}}<br>
+                    <td class="td">{{val.First_name|default_if_none:'' }} {{val.Mid_name|default_if_none:'' }} {{val.Last_name|default_if_none:'' }}<br>
                         
                     </td>
                     </td>
@@ -46,7 +46,7 @@
     <div><p>{{val.Panchayath_name}}</p></div>
     <div><p>{{val.id}}</p></div>
     </div>
-    <div class="btn"><a href="/edit_profile/{{request.session.userid}}" ><button type="button">EDIT</button></a> </div>
+    <div class="btn"><a href="/editprofile/{{request.session.userid}}" ><button type="button">EDIT</button></a> </div>
  
 </form>
 </div>

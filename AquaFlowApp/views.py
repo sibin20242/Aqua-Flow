@@ -130,21 +130,37 @@ class Home(View):
 
 
 
+from django.contrib import messages
+
 class Login(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/login.html")
-    def post(self,request):
-        username=request.POST['username']
-        password=request.POST['password']
-        login_obj=Login_model.objects.get(Username=username,Password=password)
-        request.session['userid']=login_obj.id
-        print(request.session['userid'])
-        if login_obj.Type=="Admin":
-            return HttpResponse('''<script>alert("login succesfully");window.location="/home"</script>''')
-        elif login_obj.Type=="Authority":
-            return HttpResponse('''<script>alert("login succesfully");window.location="/home1"</script>''')
-        else:
-         return HttpResponse('''<script>alert("login failed");window.location="/login"</script>''')
+    def get(self, request):
+        return render(request, "ADMINISTRATION/login.html")
+
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        try:
+            # Attempt to fetch the user from the database
+            login_obj = Login_model.objects.get(Username=username, Password=password)
+            request.session['userid'] = login_obj.id
+            print(request.session['userid'])
+
+            # Redirect based on the user's type
+            if login_obj.Type == "Admin":
+                messages.success(request, "Login successful")
+                return redirect('/home')
+            elif login_obj.Type == "Authority":
+                messages.success(request, "Login successful")
+                return redirect('/home1')
+            else:
+                messages.error(request, "Login failed")
+                return redirect('login')  # Assuming 'login' is the name of the login page URL pattern
+        except Login_model.DoesNotExist:
+            # Handle the case where the user does not exist
+            messages.error(request, "Invalid username or password")
+            return redirect('login')
+            
 
 class Logout(View):
     def get(self,request):
@@ -192,8 +208,15 @@ class Area(View):
 
 class AssignedWork(View):
     def get(self,request):
+        c=staff_model.objects.all()
         obj = assignedwork_model.objects.all()
-        return render(request,"AUTHORITY/assignwork.html", {"obj":obj})        
+        return render(request,"AUTHORITY/assignwork.html", {"obj":obj,"c":c})
+        # return render(request,"AUTHORITY/assignwork.html", {"obj":obj})        
+
+class Request(View):
+    def get(self,request):
+        obj = application_model.objects.all()
+        return render(request,"AUTHORITY/request.html" , {"obj":obj})
 
 class Changep(View):
     def get(self,request):
@@ -228,27 +251,29 @@ class OTP(View):
 class Profile(View):
     def get(self,request, id):
         c=authority_model.objects.filter(LOGIN_id=id).first()
+        print(c.Last_name)
         return render(request,"AUTHORITY/profile.html", {"val":c})
 
 class EditProfile(View):
     def get(self,request, id):
         # c = get_object_or_404(Login_model, id=id)
         obj=authority_model.objects.get(LOGIN=id)
-        print(obj)
         return render(request,"AUTHORITY/editprofile.html",{'val':obj})
     def post (self,request, id):        
         c = get_object_or_404(authority_model, LOGIN=id)
         ii=request.POST['First_name']
+        jj=request.POST['Last_name']
+        kk=request.POST['Mid_name']
+        print("first_name",ii)
+        print("mid_name",kk)
+        print("last_name",jj)
         form=ProfileForm(request.POST, request.FILES, instance=c)
         if form.is_valid():
             form.save()
             return render(request,"AUTHORITY/editprofile.html",{'val':c})
 
 
-class Request(View):
-    def get(self,request):
-        obj = application_model.objects.all()
-        return render(request,"AUTHORITY/request.html" , {"obj":obj})
+
 
 class RequestView(View):
     def get(self,request):

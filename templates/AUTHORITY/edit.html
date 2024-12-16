@@ -1,0 +1,106 @@
+{% extends "AUTHORITY/authoritybase.html" %}
+{% block body %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="{% static 'css/editProfile.css' %}">
+</head>
+<body>
+    <main id="main-content">
+        <div class="body1">
+            <!-- Profile Edit Form -->
+            <form class="card1" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <h1>DETAILS</h1>
+                <table>
+                    <tr>
+                        <td>
+                            {#  <div class="upload-container">
+                                <!-- File Input for Profile Picture -->
+                                <input type="file" id="file-input" accept="image/*" name="Profile">
+                                
+                                <!-- Display Profile Picture -->
+                                {% if val.Profile %}
+                                    <img src="{{ val.Profile.url }}" alt="Profile Picture" style="width: 120px; height: 120px;">
+                                {% else %}
+                                    <i class="upload-icon">
+                                        <img src="{% static 'img/profile.png' %}" alt="Default Profile" style="width: 120px; height: 120px;">
+                                    </i>
+                                {% endif %}
+                            </div>  #}
+                            <div class="profile-container">
+                                <!-- Profile Image -->
+                                <img id="profile-photo" class="profile-photo" src="img/profile-placeholder.png" alt="Profile Photo">
+                        
+                                <!-- Upload Input -->
+                                <label for="file-input" class="upload-label">Upload Photo</label>
+                                <input type="file" id="file-input" accept="image/*">
+                        
+                        </td>
+                        
+                        <td>
+                            <!-- Input fields for name information -->
+                            <input type="text" placeholder="First name" name="First_name" value="{{ val.First_name|default_if_none:'' }}"> <br>
+                            <input type="text" placeholder="Middle name" name="Mid_name" value="{{ val.Mid_name|default_if_none:'' }}"> <br>
+                            <input type="text" placeholder="Last name" name="Last_name" value="{{ val.Last_name|default_if_none:'' }}"> <br>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <!-- Input fields for contact and address -->
+                    <input type="number" placeholder="Phone number" name="Phone_no" value="{{ val.Phone_no|default_if_none:'' }}">
+                </div>
+                <div>
+                    <input type="email" placeholder="E-mail" name="Mail" value="{{ val.Mail|default_if_none:'' }}">
+                </div>
+                <div>
+                    <input type="number" placeholder="Pin Code" name="Pincode" value="{{ val.Pincode|default_if_none:'' }}">
+                </div>
+                <div>
+                    <textarea placeholder="Address" name="Address">{{ val.Address|default_if_none:'' }}</textarea>
+                </div>
+                <div>
+                    <input type="text" placeholder="Panchayath Name" name="Panchayath_name" value="{{ val.Panchayath_name|default_if_none:'' }}">
+                </div>
+
+                <div class="btun">
+                    <!-- Link to change password page -->
+                    <a href="changepassword.html">
+                        <button type="button">Change Password</button>
+                    </a>
+                    
+                    <!-- Submit Button to save the profile changes -->
+                    <button type="submit" class="save">Save</button>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script>
+        // JavaScript to handle file input and preview
+        const fileInput = document.getElementById('file-input');
+        const profilePhoto = document.getElementById('profile-photo');
+        const uploadMessage = document.getElementById('upload-message');
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    profilePhoto.src = e.target.result;
+                    uploadMessage.textContent = `Uploaded: ${file.name}`;
+                };
+                reader.readAsDataURL(file);
+            } else {
+                uploadMessage.textContent = 'No file selected.';
+            }
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

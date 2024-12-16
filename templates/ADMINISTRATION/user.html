@@ -32,20 +32,33 @@
                 </tr>
             </thead>
             <tbody>
-              {% for i in obj %}
-                <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>101</td>
-                  <td>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</td>
-                  <td>{{ i.Address }}</td>
-                  <td>{{ i.Consumer_no }}</td>
-                  <td>{{ i.Mail }}</td>
-                  <td>{{ i.Phone_no }}</td>
-                  <td><img src={{ i.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px;"></td>
+              {% if obj %}
+                {% for i in obj %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ i.ID }}</td>
+                    <td>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</td>
+                    <td>{{ i.Address }}</td>
+                    <td>{{ i.Consumer_no }}</td>
+                    <td>{{ i.Mail }}</td>
+                    <td>{{ i.Phone_no }}</td>
+                    <td>
+                      {% if i.Profile %}
+                        <img src="{{ i.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
+                      {% else %}
+                        <span>No Profile Picture</span>
+                      {% endif %}
+                    </td>
                     <td><a href="/remove_user/{{ i.LOGIN.id }}">Remove</a></td>
-                </tr>
+                  </tr>
                 {% endfor %}
+              {% else %}
+                <tr>
+                  <td colspan="9">No users found.</td>
+                </tr>
+              {% endif %}
             </tbody>
+            
         </table>
 </form>
   </main>

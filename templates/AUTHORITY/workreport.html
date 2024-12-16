@@ -14,7 +14,12 @@
             <div class="profile">
                 {% for i in obj %}
                 <!-- Assign a unique data-target for each user, like section-{{ forloop.counter }} -->
-                <img src={{ i.STAFF.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px; border-radius:50%">
+                {% if val.Profile %}
+                <div class="pic"><img src="{{val.Profile.url}}"> </div>
+                {% else %}
+                <i class="upload-icon"><img src={% static "profile.png" %}></i> 
+                {% endif %}
+              
                 <a class="nav-link" data-target="section-{{ forloop.counter }}">
                     {{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}
                 </a>
@@ -23,7 +28,7 @@
         </div>
 
         <!-- Divider line -->
-        <div class="card"></div>
+    
 
         <!-- Main content section -->
         <div class="content">

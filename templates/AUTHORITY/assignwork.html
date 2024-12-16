@@ -4,38 +4,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">  
     <title>Sidebar Navigation</title>
     <link rel="stylesheet" href="{% static 'css/user.css' %}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 </head>
 <body>
     <!-- Navbar with logo and title in the center -->
  <div class="body1">
-
+    
     <div class="container">
         <!-- Sidebar with profile links -->
+
         <div class="con">
+            <div class="button1">
+            <a>ASSING WORK</button>
+            </div>
             <div class="profile">
-                {% for i in obj %}
-                <img src={{ i.STAFF.Profile.url }} alt="Profile Picture" style="width: 50px; height: 50px; border-radius:50%">
-                <a class="nav-link" data-target="section1">{{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}</a>
+                {% for i in c %}
+               
+                <td>
+                    {% if i.Profile %}
+                    <img src="{{ i.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
+                  {% else %}
+                    <span>No Profile Picture</span>
+                  {% endif %}
+                  </td>
+               
+                <a class="nav-link" data-target="section-{{ forloop.counter }}">{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</a>
+                {% endfor %}
+
             </div>
         </div>
 
         <!-- Divider line -->
-        <div class="card"></div>
+       
 
         <!-- Main content section -->
         <div class="content">
-            <div id="section1" class="section">
-                <h2>{{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}</h2>
-                <p>{{ i.Work }}</p>
+          
+            {% for i in obj %}
+            <div id="section-{{ forloop.counter }}" class="section">
+                
+                <h2>   {{ i.First_name }}    {{ i.Mid_name }}  {{ i.Last_name }}</h2>
+
+        
+ 
+
+       <p>{{ i.Work }}</p>
+     <p>{{ i.Area }}</p>
         </div>
+       
+        {% endfor %}
+   
+
     </div>
 </div>
-    {% endfor %}
+</div>
 
     <script>
         const navLinks = document.querySelectorAll('.nav-link');

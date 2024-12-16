@@ -1,31 +1,22 @@
 {% load static%}
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Simple Navbar with Sidebar</title>
-        <link rel="stylesheet" href="{% static 'css/staff.css' %}">
-        {% comment %} <link rel="stylesheet" href="{% static 'css/time.css' %}"> {% endcomment %}
-        {% comment %} <link rel="stylesheet" href="{% static 'css/user.css' %}"> {% endcomment %}
-
-        
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Navbar with Sidebar</title>
+<link rel="stylesheet" href="{% static 'css/staff.css' %}"> 
 </head>
 <body>
 
 <div class="navbar">
-    
-    <div class="logo">
-     
-      <img src="{% static "img/logo.jpg" %}" alt="Logo"> 
-      <span class="logo-text">AQUA FLOW</span>
-    </div>
-  </div>
-  
+<div class="logo"> 
+<img src="{% static "img/logo.jpg" %}" alt="Logo"> 
+<span class="logo-text">AQUA FLOW</span>
 
-  <!-- Sidebar with navigation links -->
-   
-  {% block body %}
+</div>
+</div>
+{% block body %}
+{% endblock %}
 
-  {% endblock %}
 </body>
 </html>

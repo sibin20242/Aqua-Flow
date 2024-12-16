@@ -1,48 +1,235 @@
+{% extends "AUTHORITY/authoritybase.html" %} 
+{% block body %}
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"> <!-- Character encoding for the document -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Responsive design for mobile devices -->
-    <title>Document</title> <!-- Title of the document displayed in the browser tab -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> <!-- Link to Google Material Icons -->
-    <link rel="stylesheet" href="{% static 'css/login.css' %}"> <!-- Link to the external CSS stylesheet for styling -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    {#  <link rel="stylesheet" href="{% static 'css/Login.css' %}">  #}
+    <style>
+        /* General Enhancements */
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #00416a, #e4e5e6); /* Water-themed gradient */
+
+            margin: 0;
+        }
+
+        .body1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+            padding: 25px 40px;
+            width: 360px;
+            animation: slideDown 0.5s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+
+        .center {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #555555;
+            margin-bottom: 5px;
+        }
+
+        .User, .pass {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .material-icons {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0B0421;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px 10px 10px 35px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus {
+            border-color: #0B0421;
+            outline: none;
+            box-shadow: 0 0 5px  #0B0421
+        }
+
+        button {
+            background-color: #0B0421;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color:rgb(69, 49, 135);
+        }
+
+        #Forget {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        #Forget a {
+            font-size: 14px;
+            color:rgb(34, 13, 119);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        #Forget a:hover {
+            color:rgb(35, 20, 121);
+        }
+
+        p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        p a {
+            color:  #0B0421;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        p a:hover {
+            color:  #0B0421;
+        }
+
+        /* Toast Styles */
+        #toast-container {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        .toast {
+            padding: 10px 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #fff;
+            animation: fadein 0.5s, fadeout 0.5s 2.5s;
+        }
+
+        .toast.success {
+            background-color: #4CAF50;
+        }
+
+        .toast.error {
+            background-color: #f44336;
+        }
+
+        @keyframes fadein {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeout {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+    </style>
 </head>
 <body>
-    <!-- Form container for the login card -->
-    <form class="card" method="post">
-         {% csrf_token %}
-        <h1 id="head">LOGIN</h1> <!-- Main heading for the login form -->
-        
-        <div class="center">
-            <label for="user">User name</label> <!-- Label for the username input -->
+    <div class="body1">
+        <!-- Toast Container -->
+        <div id="toast-container">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="toast {{ message.tags }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
         </div>
-        
-        <div class="User"> 
-            <i class="material-icons person-icon">person</i> <!-- Icon for username field -->
-            <input type="text" class="username" placeholder="Enter username/E-mail/Phone Number" name="username"> <!-- Input for username -->
-        </div>
-        
-        <div class="center">
-            <label for="password">Password</label> <!-- Label for the password input -->
-            <div class="pass">
-                <i class="material-icons lock-icon">lock</i> <!-- Icon for password field -->
-                <input type="password" class="password" placeholder="Enter your Password" name="password"> <!-- Input for password -->
+
+        <!-- Login Form -->
+        <form class="card" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <h1 id="head">Login</h1>
+            <div class="center">
+                <label for="username">User Name</label>
             </div>
-        </div>
-        
-        <div>
-             <button type="submit" >Login</button> <!-- Button to submit the login form -->
-        </div>
-        
-        <div id="Forget">
-            <a href="#">Forget Password?</a> <!-- Link to reset password -->
-        </div>
-        
-        <div>
-            <p>
-                Don't have any Account? <a href="sign.html">Sign up</a> <!-- Link to the signup page -->
-            </p>
-        </div>
-    </form>
+            <div class="User">
+                <i class="material-icons person-icon">person</i>
+                <input type="text" name="username" id="username" placeholder="Enter username" required>
+            </div>
+            <div class="center">
+                <label for="password">Password</label>
+                <div class="pass">
+                    <i class="material-icons lock-icon">lock</i>
+                    <input type="password" name="password" id="password" placeholder="Enter your Password" required>
+                </div>
+            </div>
+            <div>
+                <button type="submit">Login</button>
+            </div>
+            <div id="Forget">
+                <a href="#">Forget Password?</a>
+            </div>
+            <div>
+                <p>
+                    Don't have an Account? <a href="sign.html">Sign up</a>
+                </p>
+            </div>
+        </form>
+    </div>
+    <script>
+        // Auto-remove toasts after 3 seconds
+        setTimeout(() => {
+            const toasts = document.querySelectorAll('.toast');
+            toasts.forEach(toast => toast.remove());
+        }, 3000);
+
+        // Smooth hover effect for button
+        document.querySelector('button').addEventListener('mouseover', function() {
+            this.style.boxShadow = '0 4px 15px rgba(0, 191, 165, 0.4)';
+        });
+
+        document.querySelector('button').addEventListener('mouseout', function() {
+            this.style.boxShadow = 'none';
+        });
+    </script>
 </body>
 </html>
+{% endblock %}
