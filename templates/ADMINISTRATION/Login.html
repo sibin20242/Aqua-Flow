@@ -1,6 +1,5 @@
-{% extends "AUTHORITY/authoritybase.html" %} 
+{% extends "AUTHORITY/authoritybase.html" %}
 {% block body %}
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,13 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    {#  <link rel="stylesheet" href="{% static 'css/Login.css' %}">  #}
     <style>
         /* General Enhancements */
         body {
             font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #00416a, #e4e5e6); /* Water-themed gradient */
-
+            background: linear-gradient(to bottom, #00416a, #e4e5e6);
             margin: 0;
         }
 
@@ -83,7 +80,7 @@
         input[type="text"]:focus, input[type="password"]:focus {
             border-color: #0B0421;
             outline: none;
-            box-shadow: 0 0 5px  #0B0421
+            box-shadow: 0 0 5px #0B0421;
         }
 
         button {
@@ -99,7 +96,7 @@
         }
 
         button:hover {
-            background-color:rgb(69, 49, 135);
+            background-color: rgb(69, 49, 135);
         }
 
         #Forget {
@@ -109,13 +106,13 @@
 
         #Forget a {
             font-size: 14px;
-            color:rgb(34, 13, 119);
+            color: rgb(34, 13, 119);
             text-decoration: none;
             transition: color 0.3s ease;
         }
 
         #Forget a:hover {
-            color:rgb(35, 20, 121);
+            color: rgb(35, 20, 121);
         }
 
         p {
@@ -125,14 +122,14 @@
         }
 
         p a {
-            color:  #0B0421;
+            color: #0B0421;
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s ease;
         }
 
         p a:hover {
-            color:  #0B0421;
+            color: #0B0421;
         }
 
         /* Toast Styles */
@@ -222,13 +219,16 @@
         }, 3000);
 
         // Smooth hover effect for button
-        document.querySelector('button').addEventListener('mouseover', function() {
-            this.style.boxShadow = '0 4px 15px rgba(0, 191, 165, 0.4)';
-        });
+        const button = document.querySelector('button');
+        if (button) {
+            button.addEventListener('mouseover', function() {
+                this.style.boxShadow = '0 4px 15px rgba(0, 191, 165, 0.4)';
+            });
 
-        document.querySelector('button').addEventListener('mouseout', function() {
-            this.style.boxShadow = 'none';
-        });
+            button.addEventListener('mouseout', function() {
+                this.style.boxShadow = 'none';
+            });
+        }
     </script>
 </body>
 </html>

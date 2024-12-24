@@ -148,7 +148,7 @@ class Login(View):
 
             # Redirect based on the user's type
             if login_obj.Type == "Admin":
-                messages.success(request, "Login successful")
+                # messages.success(request, "Login successful")
                 return redirect('/home')
             elif login_obj.Type == "Authority":
                 messages.success(request, "Login successful")
@@ -260,17 +260,17 @@ class EditProfile(View):
         obj=authority_model.objects.get(LOGIN=id)
         return render(request,"AUTHORITY/editprofile.html",{'val':obj})
     def post (self,request, id):        
-        c = get_object_or_404(authority_model, LOGIN=id)
+        obj=authority_model.objects.get(LOGIN=id)
         ii=request.POST['First_name']
         jj=request.POST['Last_name']
         kk=request.POST['Mid_name']
         print("first_name",ii)
         print("mid_name",kk)
         print("last_name",jj)
-        form=ProfileForm(request.POST, request.FILES, instance=c)
+        form=ProfileForm(request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            return render(request,"AUTHORITY/editprofile.html",{'val':c})
+            return render(request,"AUTHORITY/editprofile.html",{'val':obj})
 
 
 
@@ -295,4 +295,73 @@ class Authoritybase(View):
     def get(self,request):
         return render(request,"AUTHORITY/authoritybase.html")
         
-        
+# /////////////////////////////////////////USER API/////////////////////////////////////////////////
+
+
+class UserReg(APIView):
+    def post(self, request):
+        user_serial = UserSerializer (data=request.data)
+        login_serial = LoginSerializer (data=request.data)
+        data_valid = user_serial.is_valid()
+        login_valid = login_serial.is_valid()
+        if data_valid and login_valid:
+            password = request.data['password' ]
+            login_profile=login_serial.save(user_type="USER", password=password)
+            user_serial.save(LOGIN=login_profile)
+            return Response(user_serial.data, status=status.HTTP_201_CREATED)
+        return Response({'login_error': login_serial.errors if not login_valid else None,
+                        'user _error': user_serial.errors if not data_valid else None})
+                    
+
+class ViewStatus(APIView):
+    def get(self, request):
+        status = StatusTable.objects.all()
+        Status_serializer=StatusSerializer(Status, many = True)
+        return Response(Status_serializer.data)
+
+class ViewTime(APIView):
+    def get(self, request):
+        Time = TimeTable.objects.all()
+        Time_serializer=TimeSerializer(Time, many = True)
+        return Response(Time_serializer.data)
+
+class ViewBill(APIView):
+    def get(self, request):
+        Bill = StatusTable.objects.all()
+        Bill_serializer=BillSerializer(Bill, many = True)
+        return Response(Bill_serializer.data)
+
+class ViewProfile(APIView):
+    def get(self, request):
+        Profile = ProfileTable.objects.all()
+        Profile_serializer=ProfileSerializer(Profile, many = True)
+        return Response(Profile_serializer.data)
+
+class ViewComplaint(APIView):
+    def get(self, request):
+        Complaint = ComplaintTable.objects.all()
+        Complaint_serializer=ComplaintSerializer(Complaint, many = True)
+        return Response(Complaint_serializer.data)
+
+
+# /////////////////////////////////////////STAFF API/////////////////////////////////////////////////
+
+
+
+
+
+class ViewAssignedwork(APIView):
+    def get(self, request):
+        Assignedwork = AssignedworkTable.objects.all()
+        Assignedwork_serializer=AssignedworkSerializer(Assignedwork, many = True)
+        return Response(Assignedwork_serializer.data)
+
+class ViewUserdetails(APIView):
+    def get(self, request):
+        Userdetails = UserdetailsTable.objects.all()
+        Userdetails_serializer=UserdetailsSerializer(Userdetails, many = True)
+        return Response(Userdetails_serializer.data)
+
+
+
+
