@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from .models import * 
 from .forms import * 
 from django.http import HttpResponse
+from rest_framework.views import APIView
 
 
 # Create your views here.
@@ -312,6 +313,13 @@ class UserReg(APIView):
         return Response({'login_error': login_serial.errors if not login_valid else None,
                         'user _error': user_serial.errors if not data_valid else None})
                     
+class Loginapi(APIView):
+    def get(self, request):
+        Login = StatusTable.objects.all()
+        Login_serializer=LoginSerializer(Login, many = True)
+        return Response(Login_serializer.data)
+
+
 
 class ViewStatus(APIView):
     def get(self, request):
@@ -343,6 +351,41 @@ class ViewComplaint(APIView):
         Complaint_serializer=ComplaintSerializer(Complaint, many = True)
         return Response(Complaint_serializer.data)
 
+        
+class AppliReg(APIView):
+    def post(self, request):
+        Application_Serializer = ApplicationSerializer (data=request.data)
+        if Application_Serializer.is_valid():
+            Application_Serializer.save(LOGIN=login_profile)
+            return Response(Application_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'application_error': Application_Serializer.errors if not login_valid else None})
+
+
+class ComplaintReg(APIView):
+    def post(self, request):
+        Complaint_Serializer = ComplaintSerializer (data=request.data)
+        if Complaint_Serializer.is_valid():
+            Complaint_Serializer.save(LOGIN=login_profile)
+            return Response(Complaint_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'complaint_error': Complaint_Serializer.errors if not login_valid else None})
+
+class ProfileReg(APIView):
+    def post(self, request):
+        Profile_Serializer = ProfileSerializer (data=request.data)
+        if Profile_Serializer.is_valid():
+            Profile_Serializer.save(LOGIN=login_profile)
+            return Response(Profile_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'profile_error': Profile_Serializer.errors if not login_valid else None})
+
+
+class Feedback(APIView):
+    def post(self, request):
+        Feedback_Serializer = FeedbackSerializer (data=request.data)
+        if Feedback_Serializer.is_valid():
+            Feedback_Serializer.save(LOGIN=login_profile)
+            return Response(Feedback_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'feedback_error': Feedback_Serializer.errors if not login_valid else None})
+
 
 # /////////////////////////////////////////STAFF API/////////////////////////////////////////////////
 
@@ -362,6 +405,18 @@ class ViewUserdetails(APIView):
         Userdetails_serializer=UserdetailsSerializer(Userdetails, many = True)
         return Response(Userdetails_serializer.data)
 
+class UpdateReport(APIView):
+    def post(self, request):
+        Report_Serializer = UpdateReportSerializer (data=request.data)
+        if Report_Serializer.is_valid():
+            Report_Serializer.save(LOGIN=login_profile)
+            return Response(Report_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'report_error': Report_Serializer.errors if not login_valid else None})
 
-
-
+class MeterReading(APIView):
+    def post(self, request):
+        Meter_Serializer = MeterReadingSerializer (data=request.data)
+        if Meter_Serializer.is_valid():
+            Meter_Serializer.save(LOGIN=login_profile)
+            return Response(Meter_Serializer.data, status=status.HTTP_201_CREATED)
+        return Response({'meter_error': Meter_Serializer.errors if not login_valid else None})
