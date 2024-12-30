@@ -65,26 +65,24 @@ urlpatterns = [
 
     #////////////////////API USER//////////////////////
 
-
-    path('userreg/',UserReg.as_view() ,name="userreg"),
-    path('Login/',Loginapi.as_view() , name="Login"),
-    path('Status/',ViewStatus.as_view() , name="ViewStatus"),
-    path('Time/',ViewTime.as_view() , name="ViewTime"),
-    path('Bill/',ViewBill.as_view() , name="ViewBill"),
-    path('Profile/',ViewProfile.as_view() , name="ViewProfile"),
-    path('Complaint/',ViewComplaint.as_view() , name="ViewComplaint"),
-    path('AppliReg/',AppliReg.as_view() , name="AppliReg"),
-    path('ComplaintReg/',ComplaintReg.as_view() , name="ComplaintReg"),
-    path('ProfileReg/',ProfileReg.as_view() , name="ProfileReg"),
-    path('Feedback/',Feedback.as_view() , name="Feedback"),
+    path('userregapi/',UserReg.as_view() ,name="userreg"),
+    path('Loginapi',Loginapi.as_view() , name="Login"),
+    path('Statusapi/',ViewStatus.as_view() , name="ViewStatus"),
+    path('Timeapi/',ViewTime.as_view() , name="ViewTime"),
+    path('Billapi/',ViewBill.as_view() , name="ViewBill"),
+    path('Profileapi/',ViewProfile.as_view() , name="ViewProfile"),
+    path('Complaintapi/',ViewComplaint.as_view() , name="ViewComplaint"),
+    path('AppliRegapi/',AppliReg.as_view() , name="AppliReg"),
+    path('ComplaintRegapi/',ComplaintReg.as_view() , name="ComplaintReg"),
+    path('ProfileRegapi/',ProfileReg.as_view() , name="ProfileReg"),
+    path('Feedbackapi/',Feedback.as_view() , name="Feedback"),
 
 
     #////////////////////API STAFF//////////////////////
 
-
-    path('Assignedwork/',ViewAssignedwork.as_view() , name="ViewAssignedwork"),
-    path('Userdetails/',ViewUserdetails.as_view() , name="ViewUserdetails"),
-    path('UpdateReport/',UpdateReport.as_view() , name="UpdateReport"),
-    path('MeterReading/',MeterReading.as_view() , name="MeterReading"),
+    path('Assignedworkapi/',ViewAssignedwork.as_view() , name="ViewAssignedwork"),
+    path('Userdetailsapi/',ViewUserdetails.as_view() , name="ViewUserdetails"),
+    path('UpdateReportapi/',UpdateReport.as_view() , name="UpdateReport"),
+    path('MeterReadingapi/',MeterReading.as_view() , name="MeterReading"),
 
 ]

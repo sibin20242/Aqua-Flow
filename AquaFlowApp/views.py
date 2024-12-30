@@ -5,6 +5,11 @@ from .models import *
 from .forms import * 
 from django.http import HttpResponse
 from rest_framework.views import APIView
+from django.contrib import messages
+from AquaFlowApp.serial import *
+
+
+
 
 
 # Create your views here.
@@ -131,7 +136,6 @@ class Home(View):
 
 
 
-from django.contrib import messages
 
 class Login(View):
     def get(self, request):
@@ -301,6 +305,9 @@ class Authoritybase(View):
 
 class UserReg(APIView):
     def post(self, request):
+        email=request.data.get("email")
+        username=request.data.get("username")
+        password=request.data.get("password")
         user_serial = UserSerializer (data=request.data)
         login_serial = LoginSerializer (data=request.data)
         data_valid = user_serial.is_valid()
@@ -314,12 +321,35 @@ class UserReg(APIView):
                         'user _error': user_serial.errors if not data_valid else None})
                     
 class Loginapi(APIView):
-    def get(self, request):
-        Login = StatusTable.objects.all()
-        Login_serializer=LoginSerializer(Login, many = True)
-        return Response(Login_serializer.data)
+    def post(self, request):
+        print("&&&&&&&&&&&&&")
+        response_dict={}
+        username=request.data.get("email")
+        password=request.data.get("password")
+        print("&&&&&&&&&&&&&", username, password)  
+        try:
+           user = Login_model.objects.get(Username=username,Password=password)
+        except Login_model.DoesNotExist:
+            response_dict["message"] = "No account is found for this username.Please Signup."
+            return Response(response_dict)
+        if user.Type == "User":
+            response_dict ={
+                "login_id": user.id,
+                "user_type": user.Type,
+                "status": "success",
+            }
+            print("^^^^^^^^^^^^^^^^", response_dict)
 
-
+            return Response(response_dict, status=status.HTTP_200_OK)
+        elif user.Type == "Staff":
+            response_dict = {
+                "login_id": user.id,
+                "user_type": user.Type,
+                "status": "success",
+            }
+            print("^^^^^^^^^^^^^^^^", response_dict)
+            return Response(response_dict, status=status.HTTP_200_OK)
+       
 
 class ViewStatus(APIView):
     def get(self, request):
@@ -332,6 +362,7 @@ class ViewTime(APIView):
         Time = TimeTable.objects.all()
         Time_serializer=TimeSerializer(Time, many = True)
         return Response(Time_serializer.data)
+
 
 class ViewBill(APIView):
     def get(self, request):
