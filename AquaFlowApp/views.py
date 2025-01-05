@@ -301,7 +301,18 @@ class Authoritybase(View):
         return render(request,"AUTHORITY/authoritybase.html")
         
 # /////////////////////////////////////////USER API/////////////////////////////////////////////////
-
+class Userreg1(APIView):
+    def post(self,request):
+        d=LoginSerializer(data=request.data)
+        e=signupSerializer(data=request.data)
+        u=d.is_valid()
+        s=e.is_valid()
+        if u and s:
+            g=d.save(Type='User')
+            e.save(LOGIN=g)
+            return Response(e.data, status=status.HTTP_201_CREATED)
+        return Response({'login_error': d.errors if not login_valid else None,
+                        'user _error': e.errors if not data_valid else None})
 
 class UserReg(APIView):
     def post(self, request):
@@ -371,9 +382,9 @@ class ViewBill(APIView):
         return Response(Bill_serializer.data)
 
 class ViewProfile(APIView):
-    def get(self, request):
-        Profile = ProfileTable.objects.all()
-        Profile_serializer=ProfileSerializer(Profile, many = True)
+    def get(self, request,id):
+        Profile = user_model.objects.get(LOGIN__id=id)
+        Profile_serializer=ProfileSerializer(Profile)
         return Response(Profile_serializer.data)
 
 class ViewComplaint(APIView):
@@ -384,10 +395,12 @@ class ViewComplaint(APIView):
 
         
 class AppliReg(APIView):
-    def post(self, request):
-        Application_Serializer = ApplicationSerializer (data=request.data)
+    def post(self, request, id):
+        Application_Serializer = ApplicationSerializer(data=request.data)
+        print("@@@@@@@@@@@@@@@@@@@@@@@", request.data)
         if Application_Serializer.is_valid():
-            Application_Serializer.save(LOGIN=login_profile)
+            user_obj=user_model.objects.get(LOGIN_id=id)
+            Application_Serializer.save(USER=user_obj)
             return Response(Application_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'application_error': Application_Serializer.errors if not login_valid else None})
 
@@ -401,10 +414,11 @@ class ComplaintReg(APIView):
         return Response({'complaint_error': Complaint_Serializer.errors if not login_valid else None})
 
 class ProfileReg(APIView):
-    def post(self, request):
-        Profile_Serializer = ProfileSerializer (data=request.data)
+    def put(self, request,id):
+        Profile = user_model.objects.get(LOGIN__id=id)
+        Profile_Serializer = ProfileSerializer (Profile,data=request.data)
         if Profile_Serializer.is_valid():
-            Profile_Serializer.save(LOGIN=login_profile)
+            Profile_Serializer.save()
             return Response(Profile_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'profile_error': Profile_Serializer.errors if not login_valid else None})
 

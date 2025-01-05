@@ -66,15 +66,16 @@ urlpatterns = [
     #////////////////////API USER//////////////////////
 
     path('userregapi/',UserReg.as_view() ,name="userreg"),
+    path('Userreg1/',Userreg1.as_view(),name="userreg1"),
     path('Loginapi',Loginapi.as_view() , name="Login"),
     path('Statusapi/',ViewStatus.as_view() , name="ViewStatus"),
     path('Timeapi/',ViewTime.as_view() , name="ViewTime"),
     path('Billapi/',ViewBill.as_view() , name="ViewBill"),
-    path('Profileapi/',ViewProfile.as_view() , name="ViewProfile"),
+    path('Profileapi/<int:id>/',ViewProfile.as_view() , name="ViewProfile"),
     path('Complaintapi/',ViewComplaint.as_view() , name="ViewComplaint"),
-    path('AppliRegapi/',AppliReg.as_view() , name="AppliReg"),
+    path('AppliRegapi/<int:id>',AppliReg.as_view() , name="AppliReg"),
     path('ComplaintRegapi/',ComplaintReg.as_view() , name="ComplaintReg"),
-    path('ProfileRegapi/',ProfileReg.as_view() , name="ProfileReg"),
+    path('ProfileRegapi/<int:id>',ProfileReg.as_view() , name="ProfileReg"),
     path('Feedbackapi/',Feedback.as_view() , name="Feedback"),
 
 

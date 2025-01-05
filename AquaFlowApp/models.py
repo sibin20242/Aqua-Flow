@@ -85,10 +85,8 @@ class reading_model(models.Model):
 class application_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
     Application_no = models.IntegerField(null=True, blank=True)
-    Status = models.CharField(max_length=100, null=True, blank=True)
     Panchayath_name = models.CharField(max_length=100, null=True, blank=True)
     Father_name = models.CharField(max_length=100, null=True, blank=True)
-    Mother_name = models.CharField(max_length=100, null=True, blank=True)
     Address = models.CharField(max_length=100, null=True, blank=True)
     Phone_no = models.IntegerField(null=True, blank=True)
     Family_members = models.IntegerField(null=True, blank=True)

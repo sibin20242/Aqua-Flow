@@ -18,10 +18,10 @@ class LoginSerializer (ModelSerializer):
 
 
 
-class signupupSerializer (ModelSerializer): 
+class signupSerializer (ModelSerializer): 
     class Meta:  
-        model =user_model 
-        fields = ['username','email','password','re-password']
+        model =user_model
+        fields = ['Mail']
 
 
 # class HomeuserSerializer (ModelSerializer): 
@@ -46,7 +46,13 @@ class BillSerializer (ModelSerializer):
 class ProfileSerializer (ModelSerializer):
      class Meta:  
         model = user_model  
-        fields = ['First_name', 'Mid_name','Last_name','Area','Mail','Pincode','Address','Panchayath_name','Profile','Phone_no']
+        fields = ['First_name', 'Mid_name','Last_name','Mail','Pincode','Address','Profile','Phone_no']
+
+
+class ViewProfileSerializer (ModelSerializer):
+     class Meta:  
+        model = user_model  
+        fields = ['Name','Consumer_no']
 
 
 
@@ -71,7 +77,7 @@ class UserdetailsSerializer (ModelSerializer):
 class ApplicationSerializer (ModelSerializer): 
     class Meta:  
         model = application_model  
-        fields = ['USER', 'Application_no','Status','Panchayath_name',' Father_name', 'Mother_name', 'Address', 'Phone_no' , 'Family_members',  'Adhar_no' , 'Rationcard', 'Neighbourconsumer_no',  'Cast', 'Aadhaar_photo' , 'Rationcard_photo' , 'Ownershipcertificate_photo' ]  
+        fields = ['Application_no','Panchayath_name','Father_name',  'Address', 'Phone_no' , 'Family_members',  'Adhar_no' , 'Rationcard', 'Neighbourconsumer_no',  'Cast', 'Aadhaar_photo' , 'Rationcard_photo' , 'Ownershipcertificate_photo' ]  
 
 
 class UpdateReportSerializer (ModelSerializer): 
