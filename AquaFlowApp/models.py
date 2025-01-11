@@ -109,6 +109,7 @@ class complaints_model(models.Model):
     Complaints= models.CharField(max_length=100, null=True, blank=True)
     # Reply = models.FileField(max_length=100, null=True, blank=True)
     Date = models.DateTimeField(auto_now_add=True)
+    complaint_type=models.CharField( max_length=50,null=True, blank=True)
 
 class feedback_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
@@ -128,6 +129,25 @@ class bill_model(models.Model):
     Payment_status = models.CharField(max_length=100, null=True, blank=True)
     Date = models.DateField(auto_now_add=True)
     Due_date = models.DateTimeField(auto_now_add=True)
+
+
+class Chat(models.Model):
+    sender = models.ForeignKey(
+        'Login_model', 
+        related_name='sent_messages', 
+        on_delete=models.CASCADE
+    )
+    receiver = models.ForeignKey(
+        'Login_model', 
+        related_name='received_messages', 
+        on_delete=models.CASCADE
+    )
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return f"From {self.sender.username} to {self.receiver.username}"
+
 
 
 

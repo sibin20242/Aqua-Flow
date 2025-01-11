@@ -69,14 +69,17 @@ urlpatterns = [
     path('Userreg1/',Userreg1.as_view(),name="userreg1"),
     path('Loginapi',Loginapi.as_view() , name="Login"),
     path('Statusapi/',ViewStatus.as_view() , name="ViewStatus"),
-    path('Timeapi/',ViewTime.as_view() , name="ViewTime"),
+    path('Timeapi',ViewTime.as_view() , name="ViewTime"),
     path('Billapi/',ViewBill.as_view() , name="ViewBill"),
     path('Profileapi/<int:id>/',ViewProfile.as_view() , name="ViewProfile"),
     path('Complaintapi/',ViewComplaint.as_view() , name="ViewComplaint"),
     path('AppliRegapi/<int:id>',AppliReg.as_view() , name="AppliReg"),
-    path('ComplaintRegapi/',ComplaintReg.as_view() , name="ComplaintReg"),
+    path('ComplaintRegapi',ComplaintReg.as_view() , name="ComplaintReg"),
     path('ProfileRegapi/<int:id>',ProfileReg.as_view() , name="ProfileReg"),
-    path('Feedbackapi/',Feedback.as_view() , name="Feedback"),
+    path('Feedbackapi',Feedback.as_view() , name="Feedback"),
+    path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
+    path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
+  
 
 
     #////////////////////API STAFF//////////////////////

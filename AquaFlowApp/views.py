@@ -370,14 +370,14 @@ class ViewStatus(APIView):
 
 class ViewTime(APIView):
     def get(self, request):
-        Time = TimeTable.objects.all()
+        Time = time_model.objects.all()
         Time_serializer=TimeSerializer(Time, many = True)
         return Response(Time_serializer.data)
 
 
 class ViewBill(APIView):
     def get(self, request):
-        Bill = StatusTable.objects.all()
+        Bill = bill_model.objects.all()
         Bill_serializer=BillSerializer(Bill, many = True)
         return Response(Bill_serializer.data)
 
@@ -409,7 +409,7 @@ class ComplaintReg(APIView):
     def post(self, request):
         Complaint_Serializer = ComplaintSerializer (data=request.data)
         if Complaint_Serializer.is_valid():
-            Complaint_Serializer.save(LOGIN=login_profile)
+            Complaint_Serializer.save()
             return Response(Complaint_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'complaint_error': Complaint_Serializer.errors if not login_valid else None})
 
@@ -425,11 +425,79 @@ class ProfileReg(APIView):
 
 class Feedback(APIView):
     def post(self, request):
-        Feedback_Serializer = FeedbackSerializer (data=request.data)
+        data=request.data
+        v=user_model.objects.filter(LOGIN__id=request.data['USER']).first()
+        data['USER']=v.pk
+        Feedback_Serializer = FeedbackSerializer (data=data)
         if Feedback_Serializer.is_valid():
-            Feedback_Serializer.save(LOGIN=login_profile)
+            Feedback_Serializer.save()
             return Response(Feedback_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'feedback_error': Feedback_Serializer.errors if not login_valid else None})
+
+
+
+
+class ChatAPIView(APIView):
+
+    def get(self, request,sender_id,receiver_id):
+        user = request.user
+        
+        if not receiver_id:
+            return Response({"error": "receiver_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            receiver = LoginTable.objects.get(id=receiver_id)
+        except LoginTable.DoesNotExist:
+            return Response({"error": "Receiver does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        chats = Chat.objects.filter(
+            (models.Q(sender=sender_id) & models.Q(receiver=receiver_id)) |
+            (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
+        ).order_by('timestamp')
+
+        serializer = ChatSerializer(chats, many=True)
+        return Response(serializer.data)
+
+    def post(self, request,sender_id,receiver_id):
+        """
+        Send a chat message from the logged-in user to a specific receiver.
+        """
+        user = sender_id
+        receiver_id=receiver_id
+        data = request.data
+        data['sender'] = user 
+        data['receiver']= receiver_id# Set the sender to the logged-in user
+
+        serializer = ChatSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ChattedUsersAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request,userid):
+        """
+        Get a list of users the logged-in user has chatted with.
+        """
+        user = userid  # Logged-in user
+        print(user)
+        
+        # Fetch all users the logged-in user has sent or received messages with
+        sent_chats = Chat.objects.filter(sender=user).values_list('receiver', flat=True)
+        received_chats = Chat.objects.filter(receiver=user).values_list('sender', flat=True)
+        
+        # Combine and get unique user IDs
+        chatted_user_ids = set(sent_chats) | set(received_chats)
+        
+        # Fetch user details for these IDs
+        chatted_users = LoginTable.objects.filter(id__in=chatted_user_ids)
+        
+        # Serialize the user details
+        serializer = ChattedUsersSerializer1(chatted_users, many=True)
+        print(serializer.data)
+        
+        return Response(serializer.data)        
 
 
 # /////////////////////////////////////////STAFF API/////////////////////////////////////////////////

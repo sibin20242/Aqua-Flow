@@ -17,4 +17,5 @@ admin.site.register(application_model)
 admin.site.register(complaints_model)
 admin.site.register(bill_model)
 admin.site.register(feedback_model)
+admin.site.register(Chat)
 

@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.serializers import ModelSerializer
 from AquaFlowApp.models import *
+from rest_framework import serializers
 
 class UserSerializer (ModelSerializer):
     class Meta:  
@@ -59,7 +60,7 @@ class ViewProfileSerializer (ModelSerializer):
 class ComplaintSerializer (ModelSerializer): 
     class Meta:  
         model = complaints_model  
-        fields = ['USER','Complaints']
+        fields = ['USER','Complaints','complaint_type']
 
 
 class AssignedworkSerializer (ModelSerializer): 
@@ -93,4 +94,27 @@ class MeterReadingSerializer (ModelSerializer):
 class FeedbackSerializer (ModelSerializer): 
     class Meta:  
         model = feedback_model  
-        fields = ['USER','Consumer_no','Complaint_no']
+        fields = ['USER','Rating','Feedback']
+
+class ChatSerializer(ModelSerializer):
+    sender_username = serializers.ReadOnlyField(source='sender.username')
+    receiver_username = serializers.ReadOnlyField(source='receiver.username')
+
+    class Meta:
+        model = Chat
+        fields = ['id', 'sender', 'receiver', 'message', 'timestamp', 'sender_username', 'receiver_username']
+class ChattedUsersSerializer(ModelSerializer):
+    class Meta:
+        model = Login_model
+        fields = ['id', 'username', 'type']
+class ChattedUsersSerializer1(ModelSerializer):
+    name = serializers.SerializerMethodField()  # Add a custom field for the name
+
+    class Meta:
+        model = Login_model
+        fields = ['id', 'username', 'type', 'name']  # Include the custom name field
+
+    def get_name(self, obj):
+        # Fetch the related UserTable instance for the given LoginTable instance
+        user = UserTable.objects.filter(LOGINID=obj).first()
+        return user.name if user else None        
