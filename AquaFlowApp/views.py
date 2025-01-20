@@ -369,8 +369,8 @@ class ViewStatus(APIView):
         return Response(Status_serializer.data)
 
 class ViewTime(APIView):
-    def get(self, request):
-        Time = time_model.objects.all()
+    def get(self, request,dat):
+        Time = time_model.objects.filter(Date=dat).all()
         Time_serializer=TimeSerializer(Time, many = True)
         return Response(Time_serializer.data)
 
@@ -389,7 +389,7 @@ class ViewProfile(APIView):
 
 class ViewComplaint(APIView):
     def get(self, request):
-        Complaint = ComplaintTable.objects.all()
+        Complaint = complaints_model.objects.all()
         Complaint_serializer=ComplaintSerializer(Complaint, many = True)
         return Response(Complaint_serializer.data)
 
@@ -468,7 +468,7 @@ class ChatAPIView(APIView):
         data['sender'] = user 
         data['receiver']= receiver_id# Set the sender to the logged-in user
 
-        serializer = ChatSerializer(data=data)
+        serializer = ChatSerializer1(data=data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

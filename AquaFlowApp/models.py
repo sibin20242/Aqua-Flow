@@ -53,11 +53,11 @@ class user_model(models.Model):
     Consumer_no = models.CharField(max_length=100, null=True, blank=True)
     Profile = models.FileField(upload_to='profile/',null=True, blank=True)
     Phone_no = models.IntegerField(null=True, blank=True)
-
+    Area=models.ForeignKey(area_model,on_delete=models.CASCADE, null=True,blank=True)
 class time_model(models.Model):
     Area = models.CharField(max_length=100, null=True, blank=True)
     Time = models.TimeField(null=True, blank=True)
-    Date = models.DateField(auto_now_add=True)
+    Date = models.DateField(null=True,blank=True)
     description = models.CharField(max_length=100, null=True, blank=True)
 
 

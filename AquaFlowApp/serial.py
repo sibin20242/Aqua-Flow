@@ -35,7 +35,7 @@ class signupSerializer (ModelSerializer):
 class TimeSerializer (ModelSerializer): 
     class Meta:  
         model = time_model  
-        fields = ['Date','Time']
+        fields = ['Date','Time','description','Area']
 
 
 class BillSerializer (ModelSerializer): 
@@ -103,6 +103,12 @@ class ChatSerializer(ModelSerializer):
     class Meta:
         model = Chat
         fields = ['id', 'sender', 'receiver', 'message', 'timestamp', 'sender_username', 'receiver_username']
+
+
+class ChatSerializer1(ModelSerializer):
+    class Meta:
+        model = Chat
+        fields = ['sender', 'receiver', 'message']
 class ChattedUsersSerializer(ModelSerializer):
     class Meta:
         model = Login_model
