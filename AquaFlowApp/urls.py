@@ -79,6 +79,8 @@ urlpatterns = [
     path('Feedbackapi',Feedback.as_view() , name="Feedback"),
     path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
     path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
+    path('api/users/', UserListView.as_view(), name='user-list'),
+    path('userchat/',AUTHORITYChat.as_view(),name='AUTHORITYChat'),
   
 
 
@@ -88,5 +90,7 @@ urlpatterns = [
     path('Userdetailsapi/',ViewUserdetails.as_view() , name="ViewUserdetails"),
     path('UpdateReportapi/',UpdateReport.as_view() , name="UpdateReport"),
     path('MeterReadingapi/',MeterReading.as_view() , name="MeterReading"),
+
+
 
 ]

@@ -435,7 +435,10 @@ class Feedback(APIView):
         return Response({'feedback_error': Feedback_Serializer.errors if not login_valid else None})
 
 
-
+class AUTHORITYChat (View):
+     def get(self, request):
+        user_id=request.session.get('userid')
+        return render (request, 'AUTHORITY/chat.html',{'user_id':user_id})
 
 class ChatAPIView(APIView):
 
@@ -533,3 +536,77 @@ class MeterReading(APIView):
             Meter_Serializer.save(LOGIN=login_profile)
             return Response(Meter_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'meter_error': Meter_Serializer.errors if not login_valid else None})
+
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+@method_decorator(csrf_exempt, name='dispatch')
+class ChatAPIView(APIView):
+
+    def get(self, request,sender_id,receiver_id):
+        user = request.user
+        
+        if not receiver_id:
+            return Response({"error": "receiver_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            receiver = Login_model.objects.get(id=receiver_id)
+        except Login_model.DoesNotExist:
+            return Response({"error": "Receiver does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        chats = Chat.objects.filter(
+            (models.Q(sender=sender_id) & models.Q(receiver=receiver_id)) |
+            (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
+        ).order_by('timestamp')
+
+        serializer = ChatSerializer(chats, many=True)
+        return Response(serializer.data)
+
+    def post(self, request,sender_id,receiver_id):
+        """
+        Send a chat message from the logged-in user to a specific receiver.
+        """
+        user = sender_id
+        receiver_id=receiver_id
+        data = request.data
+        data['sender'] = user 
+        data['receiver']= receiver_id# Set the sender to the logged-in user
+
+        serializer = ChatSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ChattedUsersAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request,userid):
+        """
+        Get a list of users the logged-in user has chatted with.
+        """
+        user = userid  # Logged-in user
+        print(user)
+        
+        # Fetch all users the logged-in user has sent or received messages with
+        sent_chats = Chat.objects.filter(sender=user).values_list('receiver', flat=True)
+        received_chats = Chat.objects.filter(receiver=user).values_list('sender', flat=True)
+        
+        # Combine and get unique user IDs
+        chatted_user_ids = set(sent_chats) | set(received_chats)
+        
+        # Fetch user details for these IDs
+        chatted_users = Login_model.objects.filter(id__in=chatted_user_ids)
+        
+        # Serialize the user details
+        serializer = ChattedUsersSerializer1(chatted_users, many=True)
+        print(serializer.data)
+        
+        return Response(serializer.data)
+
+
+class UserListView(APIView):
+    def get(self, request):
+        users = user_model.objects.all()  # Get all users
+        serializer = UserSerializer1(users, many=True)
+        return Response(serializer.data)

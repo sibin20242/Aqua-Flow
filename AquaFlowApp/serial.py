@@ -15,7 +15,14 @@ class LoginSerializer (ModelSerializer):
         model = Login_model  
         fields = ['Username','Password']
 
+from rest_framework import serializers
+from .models import user_model
 
+class UserSerializer1(serializers.ModelSerializer):
+    user_login_id=serializers.IntegerField(source='LOGIN.id',read_only=True)
+    class Meta:
+        model = user_model
+        fields = ['id', 'First_name', 'Address','Phone_no', 'Mail', 'user_login_id']
 
 
 
@@ -24,18 +31,17 @@ class signupSerializer (ModelSerializer):
         model =user_model
         fields = ['Mail']
 
-
-# class HomeuserSerializer (ModelSerializer): 
-#     class Meta:  
-#         model = ViewStatus  
-#         fields = ['']
+class StatusSerializer (ModelSerializer): 
+    class Meta:  
+        model =application_model
+        fields = ['Status']
 
 
 
 class TimeSerializer (ModelSerializer): 
     class Meta:  
         model = time_model  
-        fields = ['Date','Time','description','Area']
+        fields = ['Date','morning_Time','evening_Time','description']
 
 
 class BillSerializer (ModelSerializer): 
@@ -114,13 +120,37 @@ class ChattedUsersSerializer(ModelSerializer):
         model = Login_model
         fields = ['id', 'username', 'type']
 class ChattedUsersSerializer1(ModelSerializer):
-    name = serializers.SerializerMethodField()  # Add a custom field for the name
+    First_name = serializers.SerializerMethodField()  # Add a custom field for the name
 
     class Meta:
         model = Login_model
-        fields = ['id', 'username', 'type', 'name']  # Include the custom name field
+        fields = ['id', 'username', 'type', 'First_name']  # Include the custom name field
 
-    def get_name(self, obj):
+    def get_First_name(self, obj):
         # Fetch the related UserTable instance for the given LoginTable instance
-        user = UserTable.objects.filter(LOGINID=obj).first()
-        return user.name if user else None        
+        user = user_model.objects.filter(LOGIN=obj).first()
+        return user.First_name if user else None        
+
+
+
+class ChatSerializer(serializers.ModelSerializer):
+    sender_username = serializers.ReadOnlyField(source='sender.username')
+    receiver_username = serializers.ReadOnlyField(source='receiver.username')
+    class Meta:
+        model = Chat
+        fields = ['id', 'sender', 'receiver', 'message', 'timestamp', 'sender_username', 'receiver_username']
+class ChattedUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Login_model
+        fields = ['id', 'Username']
+class ChattedUsersSerializer1(serializers.ModelSerializer):
+    First_name = serializers.SerializerMethodField()  # Add a custom field for the name
+
+    class Meta:
+        model = Login_model
+        fields = ['id', 'Username','First_name']  # Include the custom name field
+
+    def get_First_name(self, obj):
+        # Fetch the related UserTable instance for the given LoginTable instance
+        user = user_model.objects.filter(LOGIN=obj).first()
+        return user.First_name if user else None

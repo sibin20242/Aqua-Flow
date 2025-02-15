@@ -55,10 +55,10 @@ class user_model(models.Model):
     Phone_no = models.IntegerField(null=True, blank=True)
     Area=models.ForeignKey(area_model,on_delete=models.CASCADE, null=True,blank=True)
 class time_model(models.Model):
-    Area = models.CharField(max_length=100, null=True, blank=True)
-    Time = models.TimeField(null=True, blank=True)
-    Date = models.DateField(null=True,blank=True)
     description = models.CharField(max_length=100, null=True, blank=True)
+    morning_Time = models.TimeField(null=True, blank=True)
+    evening_Time = models.TimeField(null=True, blank=True)
+    Date = models.DateField(null=True,blank=True)
 
 
 
@@ -97,6 +97,7 @@ class application_model(models.Model):
     Aadhaar_photo = models.FileField(upload_to='photo/',null=True, blank=True)
     Rationcard_photo = models.FileField(upload_to='photo/',null=True, blank=True)
     Ownershipcertificate_photo = models.FileField(upload_to='photo/', null=True, blank=True)
+    Status=models.CharField(max_length=100, null=True, blank=True,default='pending')
    
 class assignedwork_model(models.Model):
     STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
@@ -130,6 +131,26 @@ class bill_model(models.Model):
     Date = models.DateField(auto_now_add=True)
     Due_date = models.DateTimeField(auto_now_add=True)
 
+
+# class Chat(models.Model):
+#     sender = models.ForeignKey(
+#         'Login_model', 
+#         related_name='sent_messages', 
+#         on_delete=models.CASCADE
+#     )
+#     receiver = models.ForeignKey(
+#         'Login_model', 
+#         related_name='received_messages', 
+#         on_delete=models.CASCADE
+#     )
+#     message = models.TextField()
+#     timestamp = models.DateTimeField(auto_now_add=True)
+
+#     def _str_(self):
+#         return f"From {self.sender.username} to {self.receiver.username}"
+
+
+        # from django.db import models
 
 class Chat(models.Model):
     sender = models.ForeignKey(
