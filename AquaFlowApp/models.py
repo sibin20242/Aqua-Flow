@@ -6,6 +6,7 @@ class Login_model(models.Model):
     Username = models.CharField(max_length=100, null=True, blank=True)
     Password = models.CharField(max_length=100, null=True, blank=True)
     Type = models.CharField(max_length=100, null=True, blank=True)
+    Otp=models.CharField(max_length=100,null=True, blank=True)
 
 class area_model(models.Model):
     Area = models.CharField(max_length=100, null=True, blank=True)
@@ -55,7 +56,7 @@ class user_model(models.Model):
     Phone_no = models.IntegerField(null=True, blank=True)
     Area=models.ForeignKey(area_model,on_delete=models.CASCADE, null=True,blank=True)
 class time_model(models.Model):
-    description = models.CharField(max_length=100, null=True, blank=True)
+    description = models.CharField(max_length=100, null=True, blank=True,default='morining and evening time')
     morning_Time = models.TimeField(null=True, blank=True)
     evening_Time = models.TimeField(null=True, blank=True)
     Date = models.DateField(null=True,blank=True)
@@ -111,6 +112,8 @@ class complaints_model(models.Model):
     # Reply = models.FileField(max_length=100, null=True, blank=True)
     Date = models.DateTimeField(auto_now_add=True)
     complaint_type=models.CharField( max_length=50,null=True, blank=True)
+    assignedstaff= models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
+
 
 class feedback_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)

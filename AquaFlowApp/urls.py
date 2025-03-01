@@ -18,7 +18,7 @@ urlpatterns = [
     path('area/',Area.as_view(), name="area"),
     path('view_area/',view_area.as_view(), name="view_area"),
     path('authority/',Authority.as_view(), name="authority"),
-    path('changep/',Changep.as_view(), name="changep"),
+    # path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
     path('feedback/',Feedback.as_view(), name="feedback"),
     path('forgetp/',Forgetp.as_view(), name="forgetp"),
@@ -38,6 +38,7 @@ urlpatterns = [
 
     path('area/',Area.as_view(), name="area"),
     path('assignedwork/',AssignedWork.as_view(), name="assignedwork"),
+    path('assigwork_to_staff/<int:id>',AssignWorktostaff.as_view(), name="assigdworktostaff"),
     path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
     path('editprofile/<int:id>/',EditProfile.as_view(), name="editprofile"),
@@ -53,6 +54,11 @@ urlpatterns = [
     path('logout/',Logout.as_view(), name="logout"),
     path('authoritybase/',Authoritybase.as_view(), name="authoritybase"),
 
+    path('forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
+    path('verify-otp/', VerifyOTPView.as_view(), name='verify-otp'),
+    path('approvedapplication/<int:id>',approvedapplicationstatus.as_view(), name="approvedapplication"),
+    path('rejectedapplication/<int:id>',rejectapplicationstatus.as_view(), name="rejectedapplication"),
+    path('penddingapplication/<int:id>', penddingapplicationstatus.as_view(), name="penddingapplication"),
 
 
 

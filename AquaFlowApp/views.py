@@ -156,8 +156,11 @@ class Login(View):
                 # messages.success(request, "Login successful")
                 return redirect('/home')
             elif login_obj.Type == "Authority":
-                messages.success(request, "Login successful")
-                return redirect('/home1')
+                # messages.success(request, "Login successful")
+                return HttpResponse('''<script>alert("welcome Authority");window.location="/home1"</script>''')
+       
+
+               
             else:
                 messages.error(request, "Login failed")
                 return redirect('login')  # Assuming 'login' is the name of the login page URL pattern
@@ -183,10 +186,34 @@ class OTP(View):
 class Sign(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/sign.html")
-
+from datetime import datetime
+from django.http import JsonResponse
 class Time(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/time.html")
+
+    def post(self, request, *args, **kwargs):
+        date_str = request.POST.get('date')
+        time_str = request.POST.get('time')
+
+        if not date_str or not time_str:
+            return JsonResponse({'error': 'Invalid data'}, status=400)
+
+        try:
+            date_obj = datetime.strptime(date_str, "%d %B %Y").date()
+            time_obj = datetime.strptime(time_str, "%H:%M").time()
+
+            # Save to the database
+            time_entry, created = time_model.objects.get_or_create(Date=date_obj, defaults={'morning_Time': time_obj})
+
+            if not created:
+                time_entry.morning_Time = time_obj
+                time_entry.save()
+
+            return JsonResponse({'message': 'Time saved successfully!'})
+
+        except ValueError:
+            return JsonResponse({'error': 'Invalid date/time format'}, status=400)
 
 class User(View):
     def get(self,request):
@@ -213,10 +240,53 @@ class Area(View):
 
 class AssignedWork(View):
     def get(self,request):
+        complaints=complaints_model.objects.all()
         c=staff_model.objects.all()
         obj = assignedwork_model.objects.all()
-        return render(request,"AUTHORITY/assignwork.html", {"obj":obj,"c":c})
-        # return render(request,"AUTHORITY/assignwork.html", {"obj":obj})        
+        return render(request,"AUTHORITY/assignwork.html", {"obj":obj,"c":c,"complaints":complaints})
+        # return render(request,"AUTHORITY/assignwork.html", {"obj":obj}) 
+
+class approvedapplicationstatus(View):
+    def get(self,request,id):
+        apl=application_model.objects.filter(id=id).first()
+        apl.Status="approved"
+        apl.save()
+        return HttpResponse('''<script>alert("application approved succesfully");window.location="/request"</script>''')
+
+
+class AssignWorktostaff(View):
+    def get(self,request,id):
+        o=complaints_model.objects.filter(id=id).first()
+        print(o)
+        c=staff_model.objects.all()
+        return render(request,'AUTHORITY/assignworktostaff.html',{"o":o,"c":c})
+
+    def post(self,request,id):
+        o=complaints_model.objects.filter(id=id).first()
+        s=staff_model.objects.get(id=request.POST['staffid'])
+        o.assignedstaff=s
+        o.save()
+        print(o)
+        c=staff_model.objects.all()
+        return redirect('assignedwork')  
+
+class rejectapplicationstatus(View):
+    def get(self,request,id):
+        apl=application_model.objects.filter(id=id).first()
+        apl.Status="reject"
+        apl.save()
+        return HttpResponse('''<script>alert("application rejected succesfully");window.location="/request"</script>''')
+
+class penddingapplicationstatus(View):
+    def get(self,request,id):
+        apl=application_model.objects.filter(id=id).first()
+        apl.Status="pendding"
+        apl.save()
+        return HttpResponse('''<script>alert("application pendding succesfully");window.location="/request"</script>''')
+
+
+
+
 
 class Request(View):
     def get(self,request):
@@ -225,7 +295,35 @@ class Request(View):
 
 class Changep(View):
     def get(self,request):
-        return render(request,"AUTHORITY/changep.html")
+        return render(request,"AUTHORITY/Changep.html")
+
+    def post(self,request):
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        print(new_password,confirm_password)
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request,'AUTHORITY/verify_otp.html')
+
+        try:
+            user = Login_model.objects.filter(Username=email).first()
+
+            if user.Otp == otp:
+                user.Password = new_password  # Store password directly (Hashing should be done for security)
+                user.Otp = None  # Clear OTP after reset
+                user.save()
+                messages.success(request, "Password changed successfully. You can now log in.")
+                return redirect('login')
+
+            else:
+                messages.error(request, "Invalid OTP.")
+                return render(request, 'verify_otp.html')
+
+        except Login_model.DoesNotExist:
+            messages.error(request, "Invalid email or OTP.")
+            return render(request, 'verify_otp.html')
+        
 
 
 
@@ -256,7 +354,7 @@ class OTP(View):
 class Profile(View):
     def get(self,request, id):
         c=authority_model.objects.filter(LOGIN_id=id).first()
-        print(c.Last_name)
+        # print(c.Last_name)
         return render(request,"AUTHORITY/profile.html", {"val":c})
 
 class EditProfile(View):
@@ -610,3 +708,73 @@ class UserListView(APIView):
         users = user_model.objects.all()  # Get all users
         serializer = UserSerializer1(users, many=True)
         return Response(serializer.data)
+
+        from django.shortcuts import render, redirect
+from django.views import View
+from django.core.mail import send_mail
+from django.contrib import messages
+from django.utils.crypto import get_random_string
+from .models import Login_model
+
+class ForgotPasswordView(View):
+    def get(self, request):
+        print("###########")
+        return render(request, 'AUTHORITY/forgot_password.html')
+
+    def post(self, request):
+        email = request.POST.get('email')
+        print ("##########gbfhfhgfhgfhgfhgf#")
+        # try:
+        user = Login_model.objects.get(Username=email)  # Assuming email is stored in Username
+        otp = get_random_string(length=6, allowed_chars='0123456789')
+        print("asdfgh")  # Generate a 6-digit OTP
+        
+        user.Otp = otp
+        user.save()
+        
+        # Send OTP email
+        # subject = "Password Reset OTP"
+        # message = f"Your OTP for password reset is: {otp}. It is valid for 5 minutes."
+        # from_email = "no-reply@yourdomain.com"
+        # send_mail(subject, message, from_email, [email])
+        
+        messages.success(request, "OTP has been sent to your email.")
+        return redirect('verify-otp')
+
+        # except Login_model.DoesNotExist:
+        #     messages.error(request, "No user found with that email.")
+        #     return render(request, 'AUTHORITY/forgot_password.html')
+class VerifyOTPView(View):
+    def get(self, request):
+        print("asdfghjkl")
+        return render(request, 'AUTHORITY/verify_otp.html')
+
+    def post(self, request):
+        print("%%%%%%%%%%%%")
+        email = request.POST.get('email')
+        otp = request.POST.get('otp')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        print(new_password,confirm_password)
+
+        if new_password != confirm_password:
+            messages.error(request, "Passwords do not match.")
+            return render(request,'AUTHORITY/verify_otp.html')
+
+        try:
+            user = Login_model.objects.filter(Username=email).first()
+
+            if user.Otp == otp:
+                user.Password = new_password  # Store password directly (Hashing should be done for security)
+                user.Otp = None  # Clear OTP after reset
+                user.save()
+                messages.success(request, "Password changed successfully. You can now log in.")
+                return redirect('login')
+
+            else:
+                messages.error(request, "Invalid OTP.")
+                return render(request, 'verify_otp.html')
+
+        except Login_model.DoesNotExist:
+            messages.error(request, "Invalid email or OTP.")
+            return render(request, 'verify_otp.html')
