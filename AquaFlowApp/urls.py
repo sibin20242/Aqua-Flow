@@ -15,8 +15,8 @@ urlpatterns = [
     path('addlist/',Addlist.as_view(), name="addlist"),
     path('remove_addlist/<int:staff_id>',Removeaddlist.as_view(), name="remove_addlist"),
     path('remove_staff/<int:staff_id>',RemoveStaff.as_view(), name="remove_staff"),
-    path('area/',Area.as_view(), name="area"),
-    path('view_area/',view_area.as_view(), name="view_area"),
+    # path('area/',Area.as_view(), name="area"),
+    # path('view_area/',view_area.as_view(), name="view_area"),
     path('authority/',Authority.as_view(), name="authority"),
     # path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
@@ -35,8 +35,6 @@ urlpatterns = [
 
     # //////////////////////////////////////////// AUTHORITY /////////////////////////////////////////
 
-
-    path('area/',Area.as_view(), name="area"),
     path('assignedwork/',AssignedWork.as_view(), name="assignedwork"),
     path('assigwork_to_staff/<int:id>',AssignWorktostaff.as_view(), name="assigdworktostaff"),
     path('changep/',Changep.as_view(), name="changep"),
@@ -62,6 +60,8 @@ urlpatterns = [
 
 
 
+path('adminarea/',adminarea.as_view(), name="adminarea"),
+    path("areas/<int:area_id>/", AreaDetailView.as_view(), name="area_detail"),
 
 
     #/////////////////////API///////////////////////////

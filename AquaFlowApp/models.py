@@ -38,8 +38,6 @@ class staff_model(models.Model):
     Profile = models.FileField(upload_to='profile/',null=True, blank=True)
     Phone_no = models.IntegerField(null=True, blank=True)
 
-
-
    
 
 

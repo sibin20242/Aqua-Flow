@@ -97,15 +97,15 @@ class Removeaddlist(View):
 
 
 
-class Area(View):
-    def get(self,request):
-        obj = area_model.objects.all()
-        return render(request,"ADMINISTRATION/area.html", {"obj":obj})
+# class Area(View):
+#     def get(self,request):
+#         obj = area_model.objects.all()
+#         return render(request,"ADMINISTRATION/area.html", {"obj":obj})
 
 
-class view_area(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/view_areas.html")
+# class view_area(View):
+#     def get(self,request):
+#         return render(request,"ADMINISTRATION/view_areas.html")
 
 
 
@@ -136,6 +136,23 @@ class Home(View):
 
 
 
+class adminarea(View):
+    def get(self,request):
+        obj = area_model.objects.all()
+        return render(request,"ADMINISTRATION/area.html", {"areas":obj})
+class AreaDetailView(View):
+    def get(self, request, area_id):
+        obj = area_model.objects.all()
+        area = get_object_or_404(area_model, id=area_id)
+        staffs = staff_model.objects.filter(AREA=area)
+        users = user_model.objects.filter(Area=area)
+        authorities = authority_model.objects.filter(AREA=area)
+        
+        return render(
+            request, 
+            "ADMINISTRATION/area_detail.html", 
+            {"area": area, "staffs": staffs, "users": users, "authorities": authorities,"areas":obj}
+        )
 
 class Login(View):
     def get(self, request):
@@ -234,9 +251,9 @@ class WorkReport(View):
 # ///////////////////////////////////// AUTH /////////////////////////////////////////////
 
 
-class Area(View):
-    def get(self,request):
-        return render(request,"AUTHORITY/area.html")
+# class Area(View):
+#     def get(self,request):
+#         return render(request,"AUTHORITY/area.html")
 
 class AssignedWork(View):
     def get(self,request):
@@ -733,10 +750,10 @@ class ForgotPasswordView(View):
         user.save()
         
         # Send OTP email
-        # subject = "Password Reset OTP"
-        # message = f"Your OTP for password reset is: {otp}. It is valid for 5 minutes."
-        # from_email = "no-reply@yourdomain.com"
-        # send_mail(subject, message, from_email, [email])
+        subject = "Password Reset OTP"
+        message = f"Your OTP for password reset is: {otp}. It is valid for 5 minutes."
+        from_email = "no-reply@yourdomain.com"
+        send_mail(subject, message, from_email, [email])
         
         messages.success(request, "OTP has been sent to your email.")
         return redirect('verify-otp')
