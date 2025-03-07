@@ -31,9 +31,9 @@ class AddAuthority(View):
         if password == repassword:
             obj = Login_model.objects.create(Username=username,Password=password, Type='Authority')
             obj.save()
-            return HttpResponse('''<script>alert("Authority Added Succesfully");window.location="/authority"</script>''')
+            return HttpResponse('''<script>alert("Authority Added Succesfully");window.location="/addlist1"</script>''')
         else:
-            return HttpResponse('''<script>alert("Password Not Matched");window.location="/authority"</script>''')
+            return HttpResponse('''<script>alert("Password Not Matched");window.location="/addauthority"</script>''')
 
 
 
@@ -109,9 +109,6 @@ class Removeaddlist(View):
 
 
 
-class Changep(View):
-    def get(self,request):
-        return render(request,"ADMINISTRATION/changep.html")
 
 
 class Complaint(View):
@@ -342,9 +339,36 @@ class Changep(View):
             return render(request, 'verify_otp.html')
         
 
+class ChangePassword(View):
+    def get(self, request):
+        return render(request, "AUTHORITY/ChangeP.html")
+    def post(self, request):
+        current_password = request.POST.get('current_password')
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        # Fetch the user from the Login_Model
+        user = Login_model.objects.get(id=request.session.get('userid'))
+        print('=======================================================>', user.Password)
+        print('========================================================>',current_password)
+
+        # Check if the current password matches
+        if user.Password!=current_password:
+            return HttpResponse('''<script>alert('incorrect current pass');window.location='/changepass'</script>''') 
+        
+        # Validate if new passwords match
+        if new_password != confirm_password:
+            return HttpResponse('''<script>alert('New password and confirm password do not match.');window.location='/changepass'</script>''') 
+        
+        # Hash and update the new password
+        user.Password = new_password
+        user.save()
+        return HttpResponse('''<script>alert('Your password has been successfully changed..');window.location='/changepass'</script>''') 
+        
 
 
-class Feedback(View):
+
+class Feedbacks(View):
     def get(self,request):
         obj = feedback_model.objects.all()
         return render(request,"AUTHORITY/feedback.html", {"obj":obj})
@@ -370,27 +394,51 @@ class OTP(View):
 
 class Profile(View):
     def get(self,request, id):
-        c=authority_model.objects.filter(LOGIN_id=id).first()
-        # print(c.Last_name)
-        return render(request,"AUTHORITY/profile.html", {"val":c})
+        c=Login_model.objects.get(id=id)
+        print('----------------->', c.id)
+        try:
+            obj=authority_model.objects.get(LOGIN_id=c.id)
+            return render(request,"AUTHORITY/profile.html", {"val":obj})
+        except:
+            return render(request,"AUTHORITY/profile.html")
 
 class EditProfile(View):
     def get(self,request, id):
-        # c = get_object_or_404(Login_model, id=id)
-        obj=authority_model.objects.get(LOGIN=id)
-        return render(request,"AUTHORITY/editprofile.html",{'val':obj})
-    def post (self,request, id):        
-        obj=authority_model.objects.get(LOGIN=id)
-        ii=request.POST['First_name']
-        jj=request.POST['Last_name']
-        kk=request.POST['Mid_name']
-        print("first_name",ii)
-        print("mid_name",kk)
-        print("last_name",jj)
-        form=ProfileForm(request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            form.save()
+        try:
+            c = get_object_or_404(Login_model, id=id)
+            print('--------------->', id)
+            obj=Login_model.objects.get(id=id)
+            obj1=authority_model.objects.get(LOGIN=id)
+            return render(request,"AUTHORITY/editprofile.html",{'val':obj1})
+        except:
+            c = get_object_or_404(Login_model, id=id)
+            print('--------------->', id)
+            obj=Login_model.objects.get(id=id)
+
             return render(request,"AUTHORITY/editprofile.html",{'val':obj})
+
+    def post (self,request, id): 
+        c=Login_model.objects.get(id=id)
+
+        try:
+            obj=authority_model.objects.get(LOGIN=id)
+            ii=request.POST['First_name']
+            jj=request.POST['Last_name']
+            kk=request.POST['Mid_name']
+            form=ProfileForm(request.POST, request.FILES, instance=obj)
+            if form.is_valid():
+                form.save()
+                return render(request,"AUTHORITY/editprofile.html",{'val':obj})
+        except:
+            form=ProfileForm(request.POST, request.FILES)
+            if form.is_valid():
+                f=form.save(commit=False)
+                f.LOGIN=c
+                f.save()
+                return redirect('home1')
+
+
+
 
 
 
@@ -572,6 +620,7 @@ class ChatAPIView(APIView):
             (models.Q(sender=sender_id) & models.Q(receiver=receiver_id)) |
             (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
         ).order_by('timestamp')
+        print("mmmmm",chats)
 
         serializer = ChatSerializer(chats, many=True)
         return Response(serializer.data)
@@ -671,7 +720,7 @@ class ChatAPIView(APIView):
         chats = Chat.objects.filter(
             (models.Q(sender=sender_id) & models.Q(receiver=receiver_id)) |
             (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
-        ).order_by('timestamp')
+        ).order_by('timestamp').all()
 
         serializer = ChatSerializer(chats, many=True)
         return Response(serializer.data)

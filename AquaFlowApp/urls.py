@@ -20,7 +20,7 @@ urlpatterns = [
     path('authority/',Authority.as_view(), name="authority"),
     # path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
-    path('feedback/',Feedback.as_view(), name="feedback"),
+    path('feedback/',Feedbacks.as_view(), name="feedback"),
     path('forgetp/',Forgetp.as_view(), name="forgetp"),
     path('home/',Home.as_view(), name="home"),
     path('otp/',OTP.as_view(), name="otp"),
@@ -42,6 +42,7 @@ urlpatterns = [
     path('editprofile/<int:id>/',EditProfile.as_view(), name="editprofile"),
     path('feedback/',Feedback.as_view(), name="feedback"),
     path('forgetp/',Forgetp.as_view(), name="forgetp"),
+    path('changepass', ChangePassword.as_view(), name="changepass"),
     path('home1/',Home1.as_view(), name="home1"),
     path('otp/',OTP.as_view(), name="otp"),
     path('profile/<int:id>',Profile.as_view(), name="profile"),
@@ -60,7 +61,7 @@ urlpatterns = [
 
 
 
-path('adminarea/',adminarea.as_view(), name="adminarea"),
+    path('adminarea/',adminarea.as_view(), name="adminarea"),
     path("areas/<int:area_id>/", AreaDetailView.as_view(), name="area_detail"),
 
 

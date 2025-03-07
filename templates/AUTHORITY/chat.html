@@ -389,7 +389,7 @@
                             <div class="input-group mb-0">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="send-message"><i class="fa fa-send"
-                                            id="data-receiver-id"></i></span>
+                                            id="receiver-id"></i></span>
                                 </div>
                                 <input type=" text" id="message-input" name=class="form-control"
                                             placeholder="Enter text here...">
@@ -433,9 +433,13 @@
 
                         // Populate the user list
                         data.forEach(user => {
+                            const receiverId = 11;
                             const listItem = document.createElement("li");
                             listItem.classList.add("clearfix");
-                            listItem.setAttribute("data-receiver-id", user.id); // Set receiver ID dynamically
+                            
+                            listItem.setAttribute("data-receiver-id", user.LOGIN.id);
+                            listItem.setAttribute("receiver-id", user.LOGIN.id);
+                             // Set receiver ID dynamically
                             listItem.innerHTML = `
                             <img src="${user.profile_picture || 'https://bootdey.com/img/Content/avatar/avatar1.png'}" alt="avatar">
                             <div class="about">
@@ -456,8 +460,9 @@ $(document).on('click', '.chat-list li', function () {
     const receiverId = $(this).data('receiver-id');
 
     $('#send-message').attr('data-receiver-id', receiverId);
-    console.log('receiverid', receiverId); // Get receiver ID from the data attribute
-
+    console.log('receiverid', receiverId);
+     // Get receiver ID from the data attribute
+    console.log('senderid',senderId)
     if (!receiverId) {
         alert("Invalid receiver ID.");
         return;
@@ -479,7 +484,9 @@ $(document).on('click', '.chat-list li', function () {
             url: `/chat/${senderId}/${receiverId}`, // Update the URL to match your endpoint
             method: 'GET',
             success: function (response) {
+                console.log("Fetched Users:", data);
                 console.log('Sender ID:', senderId);
+                console.log('Reciever ID:', receiverId);
                 const chatHistory = $('.chat-history ul');
                 chatHistory.empty(); // Clear current chat messages
 
@@ -523,7 +530,7 @@ $(document).on('click', '.chat-list li', function () {
     fetchChatHistory();
 
     // Set interval to update chat history every 5 seconds
-    chatUpdateInterval = setInterval(fetchChatHistory, 5000);
+    // chatUpdateInterval = setInterval(fetchChatHistory, 5000);
 
     // Function to format the timestamp to show only the time (e.g., HH:MM AM/PM)
     function formatTime(timestamp) {
