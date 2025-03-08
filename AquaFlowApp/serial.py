@@ -69,16 +69,26 @@ class ComplaintSerializer (ModelSerializer):
         fields = ['USER','Complaints','complaint_type']
 
 
-class AssignedworkSerializer (ModelSerializer): 
+class AssignedworkSerializer(ModelSerializer): 
+    USER_NAME = serializers.CharField(source='USER.First_name')  # User's Name
+    CONSUMER_NO = serializers.CharField(source='USER.Consumer_no')  # Consumer Number
+    PHONE_NO = serializers.CharField(source='USER.Phone_no')  # User's Phone Number
+    COMPLAINTS = serializers.SerializerMethodField()  # Complaints assigned to staff
+
     class Meta:  
         model = assignedwork_model  
-        fields = ['USER','area','work']
+        fields = ['STAFF', 'Area', 'Work', 'USER_NAME', 'CONSUMER_NO', 'PHONE_NO', 'COMPLAINTS']
+
+    def get_COMPLAINTS(self, obj):
+        # Fetch complaints where assignedstaff matches the staff and user
+        complaints = complaints_model.objects.filter(assignedstaff=obj.STAFF, USER=obj.USER)
+        return [{"Complaint": c.Complaints, "Date": c.Date, "Type": c.complaint_type} for c in complaints]
 
 
 class UserdetailsSerializer (ModelSerializer): 
     class Meta:  
         model = user_model  
-        fields = ['User_Name','Consumer_NO','Phone_No']
+        fields = ['First_name','Consumer_no','Phone_no']
 
 
 class ApplicationSerializer (ModelSerializer): 
@@ -90,7 +100,7 @@ class ApplicationSerializer (ModelSerializer):
 class UpdateReportSerializer (ModelSerializer): 
     class Meta:  
         model = report_model  
-        fields = ['STAFF','Consumer_no','Complaint_no','Upload_photo']
+        fields = ['Consumer_no','Upload_photo','description']
 
 class MeterReadingSerializer (ModelSerializer):
     class Meta:  

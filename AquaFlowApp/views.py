@@ -270,8 +270,7 @@ class approvedapplicationstatus(View):
 
 class AssignWorktostaff(View):
     def get(self,request,id):
-        o=complaints_model.objects.filter(id=id).first()
-        print(o)
+        o=complaints_model.objects.filter(id=id)
         c=staff_model.objects.all()
         return render(request,'AUTHORITY/assignworktostaff.html',{"o":o,"c":c})
 
@@ -280,7 +279,6 @@ class AssignWorktostaff(View):
         s=staff_model.objects.get(id=request.POST['staffid'])
         o.assignedstaff=s
         o.save()
-        print(o)
         c=staff_model.objects.all()
         return redirect('assignedwork')  
 
@@ -601,6 +599,7 @@ class Feedback(APIView):
 class AUTHORITYChat (View):
      def get(self, request):
         user_id=request.session.get('userid')
+        print(user_id)
         return render (request, 'AUTHORITY/chat.html',{'user_id':user_id})
 
 class ChatAPIView(APIView):
@@ -674,24 +673,35 @@ class ChattedUsersAPIView(APIView):
 
 
 class ViewAssignedwork(APIView):
-    def get(self, request):
-        Assignedwork = AssignedworkTable.objects.all()
-        Assignedwork_serializer=AssignedworkSerializer(Assignedwork, many = True)
+    def get(self, request, id):
+        Assignedwork = assignedwork_model.objects.filter(STAFF__LOGIN__id=id)
+
+        if not Assignedwork.exists():
+            return Response({"message": "No assigned work found"}, status=404)
+
+        Assignedwork_serializer = AssignedworkSerializer(Assignedwork, many=True)
         return Response(Assignedwork_serializer.data)
+
 
 class ViewUserdetails(APIView):
     def get(self, request):
-        Userdetails = UserdetailsTable.objects.all()
+        Userdetails = user_model.objects.all()
         Userdetails_serializer=UserdetailsSerializer(Userdetails, many = True)
         return Response(Userdetails_serializer.data)
 
 class UpdateReport(APIView):
     def post(self, request):
-        Report_Serializer = UpdateReportSerializer (data=request.data)
+        Report_Serializer = UpdateReportSerializer(data=request.data)
+        staff_id = request.data.get('STAFF')
+        staff_obj = staff_model.objects.get(LOGIN_id=staff_id)
+        print(request.data)
         if Report_Serializer.is_valid():
-            Report_Serializer.save(LOGIN=login_profile)
-            return Response(Report_Serializer.data, status=status.HTTP_201_CREATED)
-        return Response({'report_error': Report_Serializer.errors if not login_valid else None})
+            print('------valid->')
+            Report_Serializer.save(STAFF=staff_obj)
+            return Response(Report_Serializer.data, status=status.HTTP_200_OK)
+
+        # Always return a response, even if `login_valid` is False
+        return Response({'report_error': Report_Serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 class MeterReading(APIView):
     def post(self, request):

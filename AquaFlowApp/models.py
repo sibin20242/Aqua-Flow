@@ -73,6 +73,7 @@ class report_model(models.Model):
 class reading_model(models.Model):
     STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
+    Previous_reading=models.IntegerField(null=True, blank=True)
     Current_reading = models.IntegerField(null=True, blank=True)
     Total_usage = models.IntegerField(null=True, blank=True)
     Fixed_charge = models.IntegerField(null=True, blank=True)
@@ -100,6 +101,7 @@ class application_model(models.Model):
    
 class assignedwork_model(models.Model):
     STAFF = models.ForeignKey(staff_model, on_delete=models.CASCADE, null=True, blank=True)
+    USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
     Area = models.CharField(max_length=100, null=True, blank=True)
     Work = models.CharField(max_length=100, null=True, blank=True)
 

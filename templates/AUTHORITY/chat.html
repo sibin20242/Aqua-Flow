@@ -8,6 +8,8 @@
     <!--  All snippets are MIT license http://bootdey.com/license -->
     <title>chat app - Bootdey.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
         body {
@@ -334,7 +336,7 @@
 
 <body>
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <input type="text" name="" id="" value="{{user_id}}">
+    <input type="hidden" name="" id="" value="{{user_id}}">
     <div class="container">
         <div class="row clearfix">
             <div class="col-lg-12">
@@ -389,7 +391,7 @@
                             <div class="input-group mb-0">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="send-message"><i class="fa fa-send"
-                                            id="receiver-id"></i></span>
+                                            id="data-receiver-id""></i></span>
                                 </div>
                                 <input type=" text" id="message-input" name=class="form-control"
                                             placeholder="Enter text here...">
@@ -433,13 +435,9 @@
 
                         // Populate the user list
                         data.forEach(user => {
-                            const receiverId = 11;
                             const listItem = document.createElement("li");
                             listItem.classList.add("clearfix");
-                            
-                            listItem.setAttribute("data-receiver-id", user.LOGIN.id);
-                            listItem.setAttribute("receiver-id", user.LOGIN.id);
-                             // Set receiver ID dynamically
+                            listItem.setAttribute("data-receiver-id", user.id); // Set receiver ID dynamically
                             listItem.innerHTML = `
                             <img src="${user.profile_picture || 'https://bootdey.com/img/Content/avatar/avatar1.png'}" alt="avatar">
                             <div class="about">
@@ -460,9 +458,8 @@ $(document).on('click', '.chat-list li', function () {
     const receiverId = $(this).data('receiver-id');
 
     $('#send-message').attr('data-receiver-id', receiverId);
-    console.log('receiverid', receiverId);
-     // Get receiver ID from the data attribute
-    console.log('senderid',senderId)
+    console.log('receiverid', receiverId); // Get receiver ID from the data attribute
+
     if (!receiverId) {
         alert("Invalid receiver ID.");
         return;
@@ -484,9 +481,7 @@ $(document).on('click', '.chat-list li', function () {
             url: `/chat/${senderId}/${receiverId}`, // Update the URL to match your endpoint
             method: 'GET',
             success: function (response) {
-                console.log("Fetched Users:", data);
                 console.log('Sender ID:', senderId);
-                console.log('Reciever ID:', receiverId);
                 const chatHistory = $('.chat-history ul');
                 chatHistory.empty(); // Clear current chat messages
 
@@ -506,7 +501,7 @@ $(document).on('click', '.chat-list li', function () {
                     chatHistory.append(`
                         <li class="clearfix">
                             <div class="message-data ${isMyMessage ? 'text-right' : 'text-left'}">
-                                 
+                                
                                 <span class="message-data-time">${formatTime(message.timestamp)}</span>
                             </div>
                             <div class="message ${messageClass} ${floatClass}">
@@ -530,7 +525,7 @@ $(document).on('click', '.chat-list li', function () {
     fetchChatHistory();
 
     // Set interval to update chat history every 5 seconds
-    // chatUpdateInterval = setInterval(fetchChatHistory, 5000);
+    chatUpdateInterval = setInterval(fetchChatHistory, 5000);
 
     // Function to format the timestamp to show only the time (e.g., HH:MM AM/PM)
     function formatTime(timestamp) {
@@ -552,13 +547,13 @@ $('#floating-button').on('click', function () {
         $('.chat-list').empty(); // Clear previous user list
 
         $.ajax({
-            url: `/api/users/`, // Your API endpoint to get the users
+            url: '/api/users/', // Your API endpoint to get the users
             method: 'GET',
             success: function (response) {
                 // Populate the user list
                 response.forEach(function (user) {
                     const userItem = `
-                    <li class="clearfix" data-receiver-id="${user.id}">
+                    <li class="clearfix" data-receiver-id="${user.user_login_id}">
                         <img src="${user.avatar || 'https://bootdey.com/img/Content/avatar/avatar1.png'}" alt="avatar">
                         <div class="about">
                             <div class="name">${user.First_name}</div>
@@ -615,7 +610,7 @@ $('#floating-button').on('click', function () {
                    
                                     
                     <div class="message-data">
-                         <img src="${'https://bootdey.com/img/Content/avatar/avatar1.png'}" alt="avatar">
+                        
                         <span class="message-data-time">${formatTime(new Date())}</span>
                     </div>
                     <div class="message my-message">${messageText}</div>

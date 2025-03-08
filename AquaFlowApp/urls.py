@@ -93,9 +93,9 @@ urlpatterns = [
 
     #////////////////////API STAFF//////////////////////
 
-    path('Assignedworkapi/',ViewAssignedwork.as_view() , name="ViewAssignedwork"),
+    path('Assignedworkapi/<int:id>',ViewAssignedwork.as_view() , name="ViewAssignedwork"),
     path('Userdetailsapi/',ViewUserdetails.as_view() , name="ViewUserdetails"),
-    path('UpdateReportapi/',UpdateReport.as_view() , name="UpdateReport"),
+    path('UpdateReportapi',UpdateReport.as_view() , name="UpdateReport"),
     path('MeterReadingapi/',MeterReading.as_view() , name="MeterReading"),
 
 
