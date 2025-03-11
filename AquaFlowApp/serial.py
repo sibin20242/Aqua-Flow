@@ -8,7 +8,7 @@ from rest_framework import serializers
 class UserSerializer (ModelSerializer):
     class Meta:  
         model = user_model  
-        fields = ['First_name', 'Mid_name','Last_name','Area','Mail','Pincode','Address','Panchayath_name','Profile','Phone_no']
+        fields = ['First_name', 'Mid_name','Last_name','Area','Mail','Pincode','Address','Profile','Phone_no']
 
 class LoginSerializer (ModelSerializer): 
     class Meta:  
@@ -22,7 +22,7 @@ class UserSerializer1(serializers.ModelSerializer):
     user_login_id=serializers.IntegerField(source='LOGIN.id',read_only=True)
     class Meta:
         model = user_model
-        fields = ['id', 'First_name', 'Address','Phone_no', 'Mail', 'user_login_id']
+        fields = ['id', 'First_name', 'Address','Phone_no', 'Mail', 'user_login_id', 'Profile']
 
 
 
@@ -83,13 +83,20 @@ class AssignedworkSerializer(ModelSerializer):
         # Fetch complaints where assignedstaff matches the staff and user
         complaints = complaints_model.objects.filter(assignedstaff=obj.STAFF, USER=obj.USER)
         return [{"Complaint": c.Complaints, "Date": c.Date, "Type": c.complaint_type} for c in complaints]
-
+class ReadingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = reading_model
+        fields = '__all__'
 
 class UserdetailsSerializer (ModelSerializer): 
     class Meta:  
         model = user_model  
         fields = ['First_name','Consumer_no','Phone_no']
-
+class Userlist(ModelSerializer):
+    user_login_id=serializers.CharField(source='LOGIN.id') 
+    class Meta:  
+        model = user_model  
+        fields = '__all__'
 
 class ApplicationSerializer (ModelSerializer): 
     class Meta:  
@@ -144,11 +151,19 @@ class ChattedUsersSerializer1(ModelSerializer):
 
 
 class ChatSerializer(serializers.ModelSerializer):
-    sender_username = serializers.ReadOnlyField(source='sender.username')
-    receiver_username = serializers.ReadOnlyField(source='receiver.username')
+    sender_username = serializers.CharField(source='sender.username', read_only=True)
+    receiver_username = serializers.CharField(source='receiver.username', read_only=True)
     class Meta:
         model = Chat
         fields = ['id', 'sender', 'receiver', 'message', 'timestamp', 'sender_username', 'receiver_username']
+        
+class ChatSerializer1(serializers.ModelSerializer):
+    susername = serializers.CharField(source='sender.username', read_only=True)
+    rusername = serializers.CharField(source='receiver.username', read_only=True)
+    class Meta:
+        model = Chat
+        fields = ['id', 'sender', 'receiver', 'message', 'timestamp', 'susername', 'rusername']
+
 class ChattedUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Login_model
@@ -164,3 +179,9 @@ class ChattedUsersSerializer1(serializers.ModelSerializer):
         # Fetch the related UserTable instance for the given LoginTable instance
         user = user_model.objects.filter(LOGIN=obj).first()
         return user.First_name if user else None
+    
+
+class staff_modelserializer(serializers.ModelSerializer):
+    class Meta:
+        model = staff_model
+        fields = '__all__'

@@ -1,157 +1,426 @@
-    /* General body styles */
-    
-      body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        height: 100vh;
-        overflow-x: hidden;
-        background: linear-gradient(to bottom, #00416a, #e4e5e6); /* Water-themed gradient */
-      }
-  
-      /* Navbar styles */
-      .navbar {
-        display: flex;
-        justify-content: center; /* Centers the content horizontally */
-        align-items: center; /* Centers content vertically */
-        padding-top: 25px;
-        background-color: #0B0421;
-        box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.503);
-        height: 50px;
-        position: relative;
-        z-index: 2;
-      }
-  
-      /* Logo and text centered */
-      .logo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%); /* Center the logo and title */
-      }
-  
-      .logo img {
-        height: 30px;
-        width: 30px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 2px solid white;
-        margin-right: 10px;
-      }
-  
-      .logo-text {
-        color: rgb(255, 255, 255);
-        font-size: 24px;
-        font-weight: bold;
-      }
-  
-      /* Toggle button for sidebar */
-      .toggle-btn {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 24px;
-        cursor: pointer;
-        color: white;
-        z-index: 3;
-      }
-  
-      /* Sidebar styles */
-      .sidebar {
-        height: 100%;
-        width: 0; /* Hidden by default */
-        position: fixed;
-        top: 0;
-        left: 0;
-        background-color: #0B0421;
-        overflow-x: hidden; /* Disable horizontal scrolling */
-        transition: 0.5s;
-        padding-top: 60px; /* Space for navbar */
-        z-index: 1;
-      }
-  
-      .sidebar a {
-          margin-top: 80px;
-        padding: 10px 15px;
-        text-decoration: none; /* No underline */
-        font-size: 18px;
-        color: white;
-        display: block;
-        transition: 0.3s;
-      }
-  
-      .sidebar a:hover {
-        font-size: 20px;
-        color: rgb(208, 37, 37);
-      }
-  
-      /* Close button inside sidebar */
-      .sidebar .close-btn {
-        position: absolute;
-        top: 0;
-        right: 10px;
-        font-size: 36px;
-        margin-left: 50px;
-        cursor: pointer;
-        color: white;
-      }
-  
-      /* Card styles for content */
-      .card {
-        display: flex;
-        justify-content: space-evenly;
-        margin-top: 15px;
-        background-color: rgba(3, 3, 69, 0.129);
-        height: 600px;
-      }
-  
-      .car {
-        height: 50px;
-        width: 50px;
-        background-color: #0B0421;
-        margin-top: 30px;
-        border-radius: 20px;
-        box-shadow: 10px 20px 5px rgba(0, 0, 0, 0.503);
-        padding: 100px;
-        display: flex;
-        justify-content: center;
-        transition: 0.5s ease;
-      }
-  
-      .car:hover{
-          transform: scale(1.1);
-      }
-  
-      .car a {
-          text-decoration: none;
-        color: aliceblue;
-      }
-  
-      /* Centered flexbox helper classes */
-      .blah {
-        display: flex;
-        justify-content: center;
-      }
-  
-      .icon {
-        margin-top: -50px;
-      }
-  
-      .top {
-        margin-top: -40px;
-      }
-  
-      /* Main content */
-      main {
-        padding: 20px;
-        transition: margin-left 0.5s ease, width 0.5s ease;
-      }
-  
-      /* Sidebar open, adjust main content */
-      .sidebar-open main {
-        margin-left: 250px;
-        width: calc(100% - 250px); /* Adjust width based on sidebar */
-      }
+/* General body styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  background-image: url('/static/img/M.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+/* Navbar styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  background-color: #0b0421;
+  box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.503);
+  height: 80px;
+  position: ab;
+  z-index: 1;
+}
+
+/* Logo and text centered */
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo img {
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-right: 10px;
+}
+
+.logo-text {
+  color: rgb(255, 255, 255);
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Navbar links container */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* Profile circle and username container */
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Profile circle */
+.profile-circle {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #0b0421;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.profile-circle:hover {
+  transform: scale(1.1);
+  background-color: #ffdd57;
+}
+
+/* Username styles */
+.username {
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Animated button styles */
+.nav-links a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  padding: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+/* Hover effect: Background slide-in */
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.2));
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.nav-links a:hover::before {
+  left: 0;
+}
+
+/* Hover effect: Text color change */
+.nav-links a:hover {
+  color: #fff;
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(255, 255, 255, 0.4);
+}
+
+/* Active link effect */
+.nav-links a:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.4);
+}
+
+/* Sidebar styles */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #0B0421;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+  z-index: 1;
+}
+
+.sidebar a {
+  margin-top: 80px;
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidebar a:hover {
+  font-size: 20px;
+  color: rgb(208, 37, 37);
+}
+
+/* Close button inside sidebar */
+.sidebar .close-btn {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  font-size: 36px;
+  margin-left: 50px;
+  cursor: pointer;
+  color: white;
+}
+
+/* Card container styles */
+.card {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(550px, 1fr));
+  gap: 50px;
+  padding: 40px;
+  margin-top: 20px;
+}
+
+/* Attractive card styles */
+.car {
+  height: 80px;
+  width: 90%;
+  background-color: #0b042169;
+  border-radius: 10px;
+  box-shadow: 10px 10px 20px rgba(10, 20, 30, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 10px 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Hover effect: Gradient animation */
+.car::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  transition: all 1.0s ease;
+  z-index: 1;
+}
+
+.car:hover::before {
+  left: 100%;
+}
+
+/* Hover effect: Card scaling and shadow */
+.car:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(10, 17, 87, 0.5);
+  background-color: #0052cc79;
+}
+
+/* Card content styles */
+.car a {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  z-index: 2;
+}
+
+.car i {
+  font-size: 40px;
+  color: rgb(0, 0, 0);
+  transition: all 0.3s ease;
+  margin-right: 10px;
+}
+
+.car:hover i {
+  transform: rotate(360deg);
+}
+
+.car input {
+  border: none;
+  background: none;
+  color: inherit;
+  font-size: 20px;
+  text-align: center;
+  pointer-events: none;
+}
+
+/* Logout Warning Modal */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-content h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  color: #0b0421;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.modal-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.modal-buttons button.confirm {
+  background-color: #ff444480;
+  color: rgb(0, 0, 0);
+}
+
+.modal-buttons button.confirm:hover {
+  background-color: #cc0000;
+  transition: 0.5s;
+}
+
+.modal-buttons button.cancel {
+  background-color: #0b0421;
+  color: white;
+}
+
+.modal-buttons button.cancel:hover {
+  background-color: #333;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+
+  .logo {
+    position: static;
+    transform: none;
+    margin-bottom: 10px;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .profile-circle {
+    margin-left: 0;
+  }
+
+  .username {
+    margin-left: 0;
+  }
+
+  .card {
+    grid-template-columns: repeat(auto-fit, minmax(500px, 2fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .car {
+    height: 70px;
+    padding: 8px 15px;
+  }
+
+  .car i {
+    font-size: 25px;
+  }
+
+  .car p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+  }
+  .logo{
+    margin-top: -10px;
+  }
+
+  .logo-text {
+    font-size: 15px;
+  }
+
+  .nav-links a {
+    font-size: 14px;
+    padding: 6px 12px;
+    margin-right: -330px;
+    margin-top: -50px;
+  }
+
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-left:-330px;
+  }
+
+  .profile-circle {
+    margin-top: 10px;
+  }
+
+  .username {
+    margin-top: 10px;
+  }
+
+  .card {
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .car {
+    height: 60px;
+    width: 83%;
+    padding: 6px 12px;
+  }
+
+  .car i {
+    font-size: 30px;
+  }
+
+  .car p {
+    font-size: 15px;
+  }
+}

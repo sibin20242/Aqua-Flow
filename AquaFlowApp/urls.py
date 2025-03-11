@@ -35,8 +35,10 @@ urlpatterns = [
 
     # //////////////////////////////////////////// AUTHORITY /////////////////////////////////////////
 
-    path('assignedwork/',AssignedWork.as_view(), name="assignedwork"),
-    path('assigwork_to_staff/<int:id>',AssignWorktostaff.as_view(), name="assigdworktostaff"),
+    # path('assignedwork/',AssignedWork.as_view(), name="assignedwork"),
+    # path('assigwork_to_staff/<int:id>', AssignWorkToStaff.as_view(), name="assigdworktostaff"),
+ path('assignedwork/', AssignedWork.as_view(), name="assignedwork"),
+path('assigwork_to_staff/<int:id>', AssignWorkToStaff.as_view(), name="assigworktostaff"),
     path('changep/',Changep.as_view(), name="changep"),
     path('complaint/',Complaint.as_view(), name="complaint"),
     path('editprofile/<int:id>/',EditProfile.as_view(), name="editprofile"),
@@ -82,7 +84,7 @@ urlpatterns = [
     path('Complaintapi/',ViewComplaint.as_view() , name="ViewComplaint"),
     path('AppliRegapi/<int:id>',AppliReg.as_view() , name="AppliReg"),
     path('ComplaintRegapi',ComplaintReg.as_view() , name="ComplaintReg"),
-    path('ProfileRegapi/<int:id>',ProfileReg.as_view() , name="ProfileReg"),
+    path('ProfileRegapi/<int:id>',ViewProfile.as_view() , name="ProfileReg"),
     path('Feedbackapi',Feedback.as_view() , name="Feedback"),
     path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
     path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
@@ -94,9 +96,16 @@ urlpatterns = [
     #////////////////////API STAFF//////////////////////
 
     path('Assignedworkapi/<int:id>',ViewAssignedwork.as_view() , name="ViewAssignedwork"),
-    path('Userdetailsapi/',ViewUserdetails.as_view() , name="ViewUserdetails"),
+    path('Userdetailsapi/<int:id>/',ViewUserdetails.as_view() , name="ViewUserdetails"),
     path('UpdateReportapi',UpdateReport.as_view() , name="UpdateReport"),
     path('MeterReadingapi/',MeterReading.as_view() , name="MeterReading"),
+    path('sProfileapi/<int:id>/',sViewProfile.as_view() , name="ViewProfile"),
+    path('sProfileRegapi/<int:id>',sProfileReg.as_view() , name="ProfileReg"),
+    path('UpdateProfile/<int:id>',UpdateProfile.as_view() , name="UpdateProfile"),
+
+    path('Userlist/',ViewUserlist.as_view() , name="ViewUserlist"),
+    path('StaffProfileUpload/',StaffProfileUpload.as_view() , name="StaffProfileUpload"),
+
 
 
 

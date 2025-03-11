@@ -37,7 +37,7 @@
             <div id="section-{{ forloop.counter }}" class="section">
                 <h2>{{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}</h2>
                 <p><b>Consumer no : </b>{{ i.Consumer_no }}</p>
-                <p><b>Complaint no : </b>{{ i.Complaint_no }}</p>
+                {#  <p><b>Complaint no : </b>{{ i.Complaint_no }}</p>  #}
                 <img src={{ i.Upload_photo.url }} alt="Profile Picture" style="width: 100px; height: 100px;">
                 <b><p>description : {{ i.description }}</p></b>
             </div>

@@ -24,24 +24,42 @@
     font-size: 80px;
   
   }
-  .car {
-    /* height: 50px;
-    width: 50px; */
+  .car { 
     background-color: #f9f9f9;
     margin-top: 30px;
     border-radius: 20px;
-    box-shadow: 10px 20px 5px rgba(0, 0, 0, 0.503);
-    padding: 100px;
-    display: flex;
-    justify-content: center;
-    transition: 0.5s ease;
-    align-items: center;
-  }
-  
-  
-  .car:hover{
-      transform: scale(1.1);
-  }
+    box-shadow: 10px 20px 10px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    /* width: 70%;
+    height:800px;
+    max-width: 900px; */
+    width: 300px; /* Thin vertical divider */
+    height: 500px;
+    position: absolute;
+    text-align: left;
+    transition: 0.3s ease;
+}
+
+.car:hover {
+    transform: scale(1.05);
+}
+
+.car h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.car p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+.car h2[style="color: red;"], .card p[style="color: red;"] {
+    font-weight: bold;
+}
+
   .con {
     width: 20%;
     padding: 10px;

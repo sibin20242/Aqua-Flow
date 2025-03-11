@@ -117,6 +117,7 @@ class complaints_model(models.Model):
 
 class feedback_model(models.Model):
     USER = models.ForeignKey(user_model, on_delete=models.CASCADE, null=True, blank=True)
+    COMPLAINT = models.ForeignKey(complaints_model, on_delete=models.CASCADE, null=True, blank=True)
     Feedback = models.CharField(max_length=100, null=True, blank=True)
     Rating = models.FloatField(null=True, blank=True)
     Date = models.DateTimeField(auto_now_add=True)

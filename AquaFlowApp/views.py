@@ -202,6 +202,9 @@ class Sign(View):
         return render(request,"ADMINISTRATION/sign.html")
 from datetime import datetime
 from django.http import JsonResponse
+
+
+#
 class Time(View):
     def get(self,request):
         return render(request,"ADMINISTRATION/time.html")
@@ -209,25 +212,30 @@ class Time(View):
     def post(self, request, *args, **kwargs):
         date_str = request.POST.get('date')
         time_str = request.POST.get('time')
+        etime_str = request.POST.get('etime')
+        print(date_str,time_str,etime_str)
 
-        if not date_str or not time_str:
+        if not date_str or not time_str or not etime_str:
             return JsonResponse({'error': 'Invalid data'}, status=400)
 
         try:
             date_obj = datetime.strptime(date_str, "%d %B %Y").date()
             time_obj = datetime.strptime(time_str, "%H:%M").time()
+            etime_obj = datetime.strptime(etime_str, "%H:%M").time()
 
             # Save to the database
-            time_entry, created = time_model.objects.get_or_create(Date=date_obj, defaults={'morning_Time': time_obj})
+            time_entry, created = time_model.objects.get_or_create(Date=date_obj, defaults={'morning_Time': time_obj,'evening_Time':etime_obj})
 
             if not created:
                 time_entry.morning_Time = time_obj
+                time_entry.evening_Time = etime_obj
                 time_entry.save()
+
 
             return JsonResponse({'message': 'Time saved successfully!'})
 
         except ValueError:
-            return JsonResponse({'error': 'Invalid date/time format'}, status=400)
+            return JsonResponse({'error': 'Invalid date/time format'},status=400)
 
 class User(View):
     def get(self,request):
@@ -255,7 +263,7 @@ class WorkReport(View):
 class AssignedWork(View):
     def get(self,request):
         complaints=complaints_model.objects.all()
-        c=staff_model.objects.all()
+        c=assignedwork_model.objects.all()
         obj = assignedwork_model.objects.all()
         return render(request,"AUTHORITY/assignwork.html", {"obj":obj,"c":c,"complaints":complaints})
         # return render(request,"AUTHORITY/assignwork.html", {"obj":obj}) 
@@ -268,19 +276,32 @@ class approvedapplicationstatus(View):
         return HttpResponse('''<script>alert("application approved succesfully");window.location="/request"</script>''')
 
 
-class AssignWorktostaff(View):
-    def get(self,request,id):
-        o=complaints_model.objects.filter(id=id)
-        c=staff_model.objects.all()
-        return render(request,'AUTHORITY/assignworktostaff.html',{"o":o,"c":c})
 
-    def post(self,request,id):
-        o=complaints_model.objects.filter(id=id).first()
-        s=staff_model.objects.get(id=request.POST['staffid'])
-        o.assignedstaff=s
-        o.save()
-        c=staff_model.objects.all()
-        return redirect('assignedwork')  
+class AssignWorkToStaff(View):  
+    def get(self, request, id):
+        complaint = get_object_or_404(complaints_model, id=id)
+        staff_list = staff_model.objects.all()
+        return render(request, 'AUTHORITY/assignworktostaff.html', {"complaint": complaint, "staff_list": staff_list})
+
+    def post(self, request, id):
+        complaint = get_object_or_404(complaints_model, id=id)
+        selected_staff = get_object_or_404(staff_model, id=request.POST['staffid'])
+        
+        # Assign staff to the complaint
+        complaint.assignedstaff = selected_staff
+        complaint.save()
+
+        # Create a new entry in assignedwork_model
+        assigned_work = assignedwork_model.objects.create(
+            STAFF=selected_staff,
+            USER=complaint.USER,  # Assuming complaint has a USER field
+            # Area=selected_staff.AREA,  # Assuming complaint has an Area field
+            Work=complaint.Complaints  # Assigning complaint details as work description
+        )
+
+        assigned_work.save()
+
+        return redirect('assignedwork') 
 
 class rejectapplicationstatus(View):
     def get(self,request,id):
@@ -547,6 +568,11 @@ class ViewProfile(APIView):
         Profile = user_model.objects.get(LOGIN__id=id)
         Profile_serializer=ProfileSerializer(Profile)
         return Response(Profile_serializer.data)
+class sViewProfile(APIView):
+    def get(self, request,id):
+        Profile = staff_model.objects.get(LOGIN__id=id)
+        Profile_serializer=ProfileSerializer(Profile)
+        return Response(Profile_serializer.data)
 
 class ViewComplaint(APIView):
     def get(self, request):
@@ -574,14 +600,41 @@ class ComplaintReg(APIView):
             return Response(Complaint_Serializer.data, status=status.HTTP_201_CREATED)
         return Response({'complaint_error': Complaint_Serializer.errors if not login_valid else None})
 
-class ProfileReg(APIView):
-    def put(self, request,id):
-        Profile = user_model.objects.get(LOGIN__id=id)
-        Profile_Serializer = ProfileSerializer (Profile,data=request.data)
-        if Profile_Serializer.is_valid():
-            Profile_Serializer.save()
-            return Response(Profile_Serializer.data, status=status.HTTP_201_CREATED)
-        return Response({'profile_error': Profile_Serializer.errors if not login_valid else None})
+class UpdateProfile(APIView):
+    def post(self, request,id):
+        Profile = staff_model.objects.get(LOGIN__id=id)
+        Profile_serializer=ProfileSerializer(Profile, data=request.data)
+        if Profile_serializer.is_valid():
+            Profile_serializer.save()
+            return Response(Profile_serializer.data, status=status.HTTP_200_OK)
+class sProfileReg(APIView):
+    def put(self, request, id):
+        try:
+            profile = staff_model.objects.get(LOGIN__id=id)
+        except staff_model.DoesNotExist:
+            return Response({'error': 'Staff profile not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        profile_serializer = staff_modelserializer(profile, data=request.data)
+        if profile_serializer.is_valid():
+            profile_serializer.save()
+            return Response(profile_serializer.data, status=status.HTTP_200_OK)
+        return Response({'profile_error': profile_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def post(self, request, id):
+        try:
+            user = user_model.objects.get(LOGIN_id=id)
+        except user_model.DoesNotExist:
+            return Response({'error': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UserSerializer1(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        # If validation fails, return current user data (as list)
+        readings_data = Userlist(user_model.objects.filter(LOGIN_id=lid), many=True)
+        return Response(readings_data.data, status=status.HTTP_200_OK)
+
 
 
 class Feedback(APIView):
@@ -611,8 +664,8 @@ class ChatAPIView(APIView):
             return Response({"error": "receiver_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            receiver = LoginTable.objects.get(id=receiver_id)
-        except LoginTable.DoesNotExist:
+            receiver = Login_model.objects.get(id=receiver_id)
+        except Login_model.DoesNotExist:
             return Response({"error": "Receiver does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         chats = Chat.objects.filter(
@@ -683,11 +736,54 @@ class ViewAssignedwork(APIView):
         return Response(Assignedwork_serializer.data)
 
 
+
 class ViewUserdetails(APIView):
+    def get(self, request, id):
+        try:
+            user = user_model.objects.get(id=id)
+        except user_model.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        # Manually extracting only needed user fields
+        user_data = {
+            "First_name": user.First_name,
+            "Mid_name": user.Mid_name,
+            "Last_name": user.Last_name,
+            "Area": user.Area.id if user.Area else None,
+            "Mail": user.Mail,
+            "Pincode": user.Pincode,
+            "Address": user.Address,
+            "Profile": str(user.Profile.url) if user.Profile else None,
+            "Phone_no": user.Phone_no
+        }
+
+        # Get and serialize all readings for the user
+        readings = reading_model.objects.filter(USER=user)
+        readings_data = ReadingSerializer(readings, many=True).data
+
+        # Merge into desired structure
+        user_data["readings"] = readings_data
+
+        return Response(user_data, status=status.HTTP_200_OK)
+class ViewUserlist(APIView):
     def get(self, request):
-        Userdetails = user_model.objects.all()
-        Userdetails_serializer=UserdetailsSerializer(Userdetails, many = True)
-        return Response(Userdetails_serializer.data)
+        user = user_model.objects.all()
+        readings_data = Userlist(user,many=True)
+        # Get and serialize all readings for the user
+        return Response(readings_data.data,status=status.HTTP_200_OK)
+    
+    
+class StaffProfileUpload(APIView):
+        def post(self, request, lid):
+            user = user_model.objects.get(LOGIN_id=lid)
+            obj = UserSerializer1(user, data=request.data)
+            print("#######################", obj)
+            if obj.is_valid():
+                obj.save()
+                return Response(obj.data, status=status.HTTP_201_CREATED)
+            readings_data = Userlist(user,many=True)
+            # Get and serialize all readings for the user
+            return Response(readings_data.data,status=status.HTTP_200_OK)
 
 class UpdateReport(APIView):
     def post(self, request):
@@ -732,7 +828,8 @@ class ChatAPIView(APIView):
             (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
         ).order_by('timestamp').all()
 
-        serializer = ChatSerializer(chats, many=True)
+        serializer = ChatSerializer1(chats, many=True)
+        print('----------get--------->', serializer.data)
         return Response(serializer.data)
 
     def post(self, request,sender_id,receiver_id):
@@ -748,6 +845,7 @@ class ChatAPIView(APIView):
         serializer = ChatSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
+            print('-----------send-------->', serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

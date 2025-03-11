@@ -6,44 +6,72 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Navbar with Sidebar</title>
+  <title>Staff Management</title>
   <!-- Font Awesome stylesheet for icon usage -->
   <link rel="stylesheet" href="{% static 'css/staff.css' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
+  <!-- Navbar -->
+  <div class="navbar">
+    <span class="logo-text">STAFF MANAGEMENT</span>
+  </div>
 
-
-  
-  <!-- Main content (cards and other sections) -->
+  <!-- Main Content -->
   <main id="main-content">
-    <form class="card">
-      <a href="/add_staff"><i class="fa-solid fa-user-plus"></i></a>
-
-      <div class="table-container">
-        <h2>STAFF</h2>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Sl.no</th>
-                    <th>Username</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for i in obj %}
-              <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ i.Username }}</td>
-                  <td><a href="/remove_addlist/{{ i.id }}">Remove</a></td>
-                  
-              </tr>
-             {% endfor %}
-            </tbody>
-        </table>
-        <a href="/staff">View more details</a>
-</form>
+    <div class="container">
+      <button class="add-authority-btn" onclick="openModal()">Add Staff</button>
+      <h2>STAFF LIST</h2>
+      <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for names or addresses..">
+      </div>
+      <ul class="responsive-table" id="staffTable">
+        <li class="table-header">
+          <div class="col col-1">S.No</div>
+          <div class="col col-2">Username</div>
+          <div class="col col-3">Remove</div>
+        </li>
+        {% if obj %}
+          {% for i in obj %}
+          <li class="table-row">
+            <div class="col col-1" data-label="S.No">{{ forloop.counter }}</div>
+            <div class="col col-2" data-label="Username">{{ i.Username }}</div>
+            <div class="col col-3" data-label="Remove"><a href="/remove_addlist/{{ i.id }}"><button class="remove-btn">Remove</button></a></div>
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="table-row">
+            <div class="col" colspan="3">No staff found.</div>
+          </li>
+        {% endif %}
+      </ul>
+      <div class="view-more-container">
+        <a href="/staff" class="view-more-link">View more details</a>
+      </div>
+    </div>
   </main>
+
+  <script>
+    function searchFunction() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const ul = document.getElementById('staffTable');
+      const li = ul.getElementsByClassName('table-row');
+
+      for (let i = 0; i < li.length; i++) {
+        const username = li[i].getElementsByClassName('col-2')[0];
+        if (username) {
+          const usernameValue = username.textContent || username.innerText;
+          if (usernameValue.toLowerCase().indexOf(filter) > -1) {
+            li[i].style.display = '';
+          } else {
+            li[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
 </body>
 </html>
 {% endblock %}

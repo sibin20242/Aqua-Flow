@@ -8,40 +8,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simple Navbar with Sidebar</title>
   <link rel="stylesheet" href="{% static 'css/staff.css' %}">
-
 </head>
 <body>
-
- 
-  
   <!-- Main content (cards and other sections) -->
   <main id="main-content">
-    <form class="card">
- 
-
-      <div class="table-container">
-        <h2>AUTHORITY</h2>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>Sl.no</th>
-                    <th>Username</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for i in obj %}
-              <tr>
-                  <td>{{ forloop.counter }}</td>
-                  <td>{{ i.Username }}</td>
-                  <td><a href="/remove_addlist1/{{ i.id }}">Remove</a></td>
-                  
-              </tr>
-             {% endfor %}
-            </tbody>
-        </table>
-        <a href="/authority">View more details</a>
-</form>
+    <div class="container">
+      <h2>AUTHORITY</h2>
+      <ul class="responsive-table">
+        <li class="table-header">
+          <div class="col col-1">Sl.no</div>
+          <div class="col col-2">Username</div>
+          <div class="col col-3">Remove</div>
+        </li>
+        {% for i in obj %}
+        <li class="table-row">
+          <div class="col col-1" data-label="">{{ forloop.counter }}</div>
+          <div class="col col-2" data-label="">{{ i.Username }}</div>
+          <div class="col col-3" data-label=""><a href="/remove_addlist1/{{ i.id }}"><button class="remove-btn">Remove</button></a></div>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="view-more-container">
+        <a href="/authority" class="view-more-link">View more details</a>
+      </div>
   </main>
 </body>
 </html>

@@ -9,7 +9,10 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/img/M.jpg');
+
         }
 
         .sidebar {
@@ -18,10 +21,20 @@
             top: 0;
             width: 250px;
             height: 100vh;
-            background: #0B0421;
+            background:rgba(0, 82, 204, 0.13);
             padding-top: 20px;
             transition: 0.3s;
             overflow-y: auto;
+        }
+
+        .sidebar input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px auto;
+            display: block;
+            border-radius: 5px;
+            border: none;
+            margin-top: 40px;
         }
 
         .sidebar a {
@@ -31,15 +44,19 @@
             color: white;
             display: block;
             transition: 0.3s;
+            margin-top: 10px;
+            color:black;
         }
 
         .sidebar a:hover {
             background: #575757;
+            transform: translateX(10px);
         }
 
         .content {
             margin-left: 270px;
             padding: 20px;
+            transition: margin-left 0.3s;
         }
 
         .card {
@@ -48,21 +65,71 @@
             border-radius: 8px;
             box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2, h3 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-top: 25px;
+            background-color: #0B0421;
+            box-shadow: 10px 8px 10px rgba(0, 0, 0, 0.503);
+            height: 80px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     </style>
 </head>
 <body>
 
+    <!-- Navbar -->
+    <div class="navbar">
+        <span class="logo-text">AREA</span>
+    </div>
+
     <div class="sidebar">
         <h2 class="text-center text-white">Areas</h2>
+        <input type="text" id="searchInput" onkeyup="filterAreas()" placeholder="Search for areas..">
         {% for area in areas %}
-            <a href="{% url 'area_detail' area.id %}">{{ area.Area }}</a>
+            <a href="{% url 'area_detail' area.id %}" class="area-link">{{ area.Area }}</a>
         {% endfor %}
-        <a href="/home/"><h2 class="text-center text-white">Home</h2></a>
     </div>
 
     <div class="content">
-        <h2>{{ area.Area }} - Details</h2>
+        <h2>{{ area.Area }} Details</h2>
 
         <h3>Staff Members</h3>
         <div class="card">
@@ -105,5 +172,21 @@
 
     </div>
 
+    <script>
+        function filterAreas() {
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toLowerCase();
+            const links = document.getElementsByClassName('area-link');
+
+            for (let i = 0; i < links.length; i++) {
+                const txtValue = links[i].textContent || links[i].innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    links[i].style.display = '';
+                } else {
+                    links[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

@@ -391,7 +391,7 @@
                             <div class="input-group mb-0">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="send-message"><i class="fa fa-send"
-                                            id="data-receiver-id""></i></span>
+                                            id="data-receiver-id"></i></span>
                                 </div>
                                 <input type=" text" id="message-input" name=class="form-control"
                                             placeholder="Enter text here...">
@@ -575,7 +575,7 @@ $('#floating-button').on('click', function () {
                 const csrftoken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
                 console.log(csrftoken)
                 console.log('Sender ID:', senderId);// Get logged-in user's ID
-                const receiverId = $(this).data('receiver-id');
+                const receiverId = $(this).attr('data-receiver-id'); 
                 console.log('receiverId ID:', receiverId); // Assuming receiver ID is stored as data attribute
                 const messageText = $('#message-input').val().trim(); // Get and trim the message
 

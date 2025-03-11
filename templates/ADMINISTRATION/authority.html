@@ -6,58 +6,125 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Navbar with Sidebar</title>
+  <title>Authority Management</title>
   <link rel="stylesheet" href="{% static 'css/staff.css' %}">
-
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
 
-  <!-- Navbar with logo and title in the center -->
-  
-  <!-- Main content (cards and other sections) -->
+  <!-- Navbar -->
+  <div class="navbar">
+    <span class="logo-text">AUTHORITY MANAGEMENT</span>
+  </div>
+
+  <!-- Main Content -->
   <main id="main-content">
-    
-    <form class="card">
-      <a href="/addauthority"><i class="fa-solid fa-user-plus"></i></a>
-      <div class="table-container">
-        <h2>AUTHORITY</h2>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Area</th>
-                    <th>Mail</th>
-                    <th>Phone no</th>
-                    <th>Profile</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% for i in obj %}
-                <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>101</td>
-                    <td>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</td>
-                    <td>{{ i.Address }}</td>
-                    <td>{{ i.Area }}</td>
-                    <td>{{ i.Mail }}</td>
-                    <td>{{ i.Phone_no }}</td>
-                   {% if i.Profile %}
-                    <td><img src="{{ i.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;"></td>
-                    {% else %}
-                 <td> <i class="upload-icon"><img src=""></i> </td>
-                   {% endif %}
-                    <td><a href="/remove_authority/{{ i.LOGIN.id }}">Remove</a></td>
-                </tr>
-               {% endfor %}
-            </tbody>
-        </table>
-    </form>
+    <div class="container">
+      <button class="add-authority-btn" onclick="openModal()">Add Authority</button>
+      <h2>AUTHORITY LIST</h2>
+      <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for names or areas..">
+      </div>
+      <ul class="responsive-table" id="authorityTable">
+        <li class="table-header">
+          <div class="col col-1">S.No</div>
+          <div class="col col-2">ID</div>
+          <div class="col col-3">Name</div>
+          <div class="col col-4">Address</div>
+          <div class="col col-5">Area</div>
+          <div class="col col-6">Mail</div>
+          <div class="col col-7">Phone no</div>
+          <div class="col col-8">Profile</div>
+          <div class="col col-9">Remove</div>
+        </li>
+        {% for i in obj %}
+        <li class="table-row">
+          <div class="col col-1" data-label="">{{ forloop.counter }}</div>
+          <div class="col col-2" data-label="">101</div>
+          <div class="col col-3" data-label="">{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</div>
+          <div class="col col-4" data-label="">{{ i.Address }}</div>
+          <div class="col col-5" data-label="">{{ i.Area }}</div>
+          <div class="col col-6" data-label="">{{ i.Mail }}</div>
+          <div class="col col-7" data-label="">{{ i.Phone_no }}</div>
+          <div class="col col-8" data-label="">
+            {% if i.Profile %}
+            <img src="{{ i.Profile.url }}" alt="Profile Picture">
+            {% else %}
+            <i class="upload-icon"><img src=""></i>
+            {% endif %}
+          </div>
+          <div class="col col-9" data-label="Remove"><a href="/remove_authority/{{ i.LOGIN.id }}"><button class="remove-btn">Remove</button></a></div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
   </main>
+
+  <!-- Modal for Add Authority -->
+  <div id="addAuthorityModal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn" onclick="closeModal()">&times;</span>
+      <form class="card" method='post' action="/addauthority">
+        {% csrf_token %}
+        <h1 id="head">ADD AUTHORITY</h1> 
+        <div class="center">
+          <label for="user">Authority name</label>
+        </div>
+        <div class="User"> 
+          {% comment %} <i class="fa-solid fa-user"></i> {% endcomment %}
+          <input type="text" class="username" name="username" placeholder="Enter username">
+        </div>
+        <div class="center">
+          <label for="password">Password</label>
+          <div class="pass">
+            {% comment %} <i class="fa-solid fa-lock"></i> {% endcomment %}
+            <input type="password" class="password" name="pass" placeholder="Enter your Password">
+          </div>
+        </div>
+        <div class="center">
+          <label for="password">Re-Password</label>
+          <div class="pass">
+            {% comment %} <i class="fa-solid fa-lock"></i> {% endcomment %}
+            <input type="password" class="password" name="repass" placeholder="Enter your Password">
+          </div>
+        </div>
+        <div>
+          <button type="submit" class="submit-btn">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById('addAuthorityModal').style.display = 'block';
+    }
+
+    function closeModal() {
+      document.getElementById('addAuthorityModal').style.display = 'none';
+    }
+
+    function searchFunction() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const ul = document.getElementById('authorityTable');
+      const li = ul.getElementsByClassName('table-row');
+
+      for (let i = 0; i < li.length; i++) {
+        const name = li[i].getElementsByClassName('col-3')[0];
+        const area = li[i].getElementsByClassName('col-5')[0];
+        if (name || area) {
+          const nameValue = name.textContent || name.innerText;
+          const areaValue = area.textContent || area.innerText;
+          if (nameValue.toLowerCase().indexOf(filter) > -1 || areaValue.toLowerCase().indexOf(filter) > -1) {
+            li[i].style.display = '';
+          } else {
+            li[i].style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
 </body>
 </html>
 {% endblock %}

@@ -6,102 +6,84 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Navbar with Sidebar</title>
+  <title>User Management</title>
   <link rel="stylesheet" href="{% static 'css/staff.css' %}">
-
-
-  <!-- Font Awesome stylesheet for icon usage -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <span class="logo-text">USER MANAGEMENT</span>
+  </div>
+
+  <!-- Main Content -->
   <main id="main-content">
-    <form class="card">
-      <div class="table-container">
-        <h2>USERS</h2>
-        <table class="styled-table">
-            <thead>
-                <tr>
-                    <th>S.No</th>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Consumer no</th>
-                    <th>Mail</th>
-                    <th>Phone no</th>
-                    <th>Profile</th>
-                    <th>Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-              {% if obj %}
-                {% for i in obj %}
-                  <tr>
-                    <td>{{ forloop.counter }}</td>
-                    <td>{{ i.ID }}</td>
-                    <td>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</td>
-                    <td>{{ i.Address }}</td>
-                    <td>{{ i.Consumer_no }}</td>
-                    <td>{{ i.Mail }}</td>
-                    <td>{{ i.Phone_no }}</td>
-                    <td>
-                      {% if i.Profile %}
-                        <img src="{{ i.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
-                      {% else %}
-                        <span>No Profile Picture</span>
-                      {% endif %}
-                    </td>
-                    <td><a href="/remove_user/{{ i.LOGIN.id }}">Remove</a></td>
-                  </tr>
-                {% endfor %}
+    <div class="container">
+      <h2>USERS</h2>
+      <div class="search-box">
+        <input type="text" id="searchInput" onkeyup="searchFunction()" placeholder="Search for names or addresses..">
+      </div>
+      <ul class="responsive-table" id="userTable">
+        <li class="table-header">
+          <div class="col col-1">S.No</div>
+          <div class="col col-2">ID</div>
+          <div class="col col-3">Name</div>
+          <div class="col col-4">Address</div>
+          <div class="col col-5">Consumer no</div>
+          <div class="col col-6">Mail</div>
+          <div class="col col-7">Phone no</div>
+          <div class="col col-8">Profile</div>
+          <div class="col col-9">Remove</div>
+        </li>
+        {% if obj %}
+          {% for i in obj %}
+          <li class="table-row">
+            <div class="col col-1" data-label="S.No">{{ forloop.counter }}</div>
+            <div class="col col-2" data-label="ID">{{ i.ID }}</div>
+            <div class="col col-3" data-label="Name">{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</div>
+            <div class="col col-4" data-label="Address">{{ i.Address }}</div>
+            <div class="col col-5" data-label="Consumer no">{{ i.Consumer_no }}</div>
+            <div class="col col-6" data-label="Mail">{{ i.Mail }}</div>
+            <div class="col col-7" data-label="Phone no">{{ i.Phone_no }}</div>
+            <div class="col col-8" data-label="Profile">
+              {% if i.Profile %}
+                <img src="{{ i.Profile.url }}" alt="Profile Picture">
               {% else %}
-                <tr>
-                  <td colspan="9">No users found.</td>
-                </tr>
+                <span>No Profile Picture</span>
               {% endif %}
-            </tbody>
-            
-        </table>
-</form>
+            </div>
+            <div class="col col-9" data-label="Remove"><a href="/remove_user/{{ i.LOGIN.id }}"><button class="remove-btn">Remove</button></a></div>
+          </li>
+          {% endfor %}
+        {% else %}
+          <li class="table-row">
+            <div class="col" colspan="9">No users found.</div>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
   </main>
 
-  <!-- JavaScript to control sidebar behavior -->
   <script>
-    let isOpen = false;
+    function searchFunction() {
+      const input = document.getElementById('searchInput');
+      const filter = input.value.toLowerCase();
+      const ul = document.getElementById('userTable');
+      const li = ul.getElementsByClassName('table-row');
 
-    function toggleSidebar() {
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    }
-
-    function openSidebar() {
-      document.getElementById("sidebar").style.width = "250px"; /* Open sidebar */
-      document.getElementById("main-content").classList.add('sidebar-open'); /* Adjust main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-bars'); /* Change to close icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-times');
-      isOpen = true;
-
-      // Add event listener for clicks outside the sidebar
-      document.addEventListener('click', handleOutsideClick);
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").style.width = "0"; /* Close sidebar */
-      document.getElementById("main-content").classList.remove('sidebar-open'); /* Reset main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-times'); /* Change back to menu icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-bars');
-      isOpen = false;
-
-      // Remove event listener for outside clicks
-      document.removeEventListener('click', handleOutsideClick);
-    }
-
-    // Function to detect clicks outside the sidebar and close it
-    function handleOutsideClick(event) {
-      const sidebar = document.getElementById('sidebar');
-      if (isOpen && !sidebar.contains(event.target) && !event.target.closest('.toggle-btn')) {
-        closeSidebar();
+      for (let i = 0; i < li.length; i++) {
+        const name = li[i].getElementsByClassName('col-3')[0];
+        const address = li[i].getElementsByClassName('col-4')[0];
+        if (name || address) {
+          const nameValue = name.textContent || name.innerText;
+          const addressValue = address.textContent || address.innerText;
+          if (nameValue.toLowerCase().indexOf(filter) > -1 || addressValue.toLowerCase().indexOf(filter) > -1) {
+            li[i].style.display = '';
+          } else {
+            li[i].style.display = 'none';
+          }
+        }
       }
     }
   </script>

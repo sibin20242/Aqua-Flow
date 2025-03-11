@@ -27,14 +27,14 @@
                 <div class="profile">
                     {% for i in c %}
                         <td>
-                            {% if i.Profile %}
-                                <img src="{{ i.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
+                            {% if i.STAFF.Profile %}
+                                <img src="{{ i.STAFF.Profile.url }}" alt="Profile Picture" style="width: 50px; height: 50px;">
                             {% else %}
                                 <span>No Profile Picture</span>
                             {% endif %}
                         </td>
                         <button class="nav-link" data-target="section-{{ forloop.counter }}">
-                            {{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}
+                            {{ i.STAFF.First_name }} {{ i.STAFF.Mid_name }} {{ i.STAFF.Last_name }}
                         </button>
                     {% endfor %}
                 </div>
@@ -64,9 +64,14 @@
 
                 {% for i in obj %}
                     <div id="section-{{ forloop.counter }}" class="section">
-                        <h2>{{ i.First_name }} {{ i.Mid_name }} {{ i.Last_name }}</h2>
-                        <p>{{ i.Work }}</p>
-                        <p>{{ i.Area }}</p>
+                        
+                        <h2>NAME           :  {{ i.USER.First_name }} {{ i.USER.Mid_name }} {{ i.USER.Last_name }}</h2>
+                        <p>PHONE NUMBER    : {{ i.USER.Phone_no}}</p>
+                        <p>EMAIL           : {{ i.USER.Mail}}</p>
+                        <p>ADDRESS         : {{ i.USER.Address}}</p>
+                        <p>CONSUMER NUMBER : {{ i.USER.Consumer_no}}</p>
+                        <p style="color: red;">WORK            : {{ i.Work }}</p>
+                        <p>PLACE           : {{ i.USER.Area.Area }}</p>
                     </div>
                 {% endfor %}
             </div>
